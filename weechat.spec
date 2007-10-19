@@ -1,12 +1,12 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.2.5
+Version:   0.2.6
 Release:   1%{?dist}
 Source:    http://weechat.flashtux.org/download/%{name}-%{version}.tar.bz2
 URL:       http://weechat.flashtux.org
 Group:     Applications/Communications
-BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-License:   GPL
+BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+License:   GPLv3
 BuildRequires: ncurses-devel python-devel perl ruby-devel 
 BuildRequires: gnutls-devel lua-devel aspell-devel
 BuildRequires: docbook-style-xsl gettext ruby
@@ -51,6 +51,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/plugins/*
 
 %changelog
+* Fri Oct 19 2007 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6-1
+- new upstream version, new license
 * Fri Jun  8 2007 Paul P. Komkoff Jr <i@stingr.net> - 0.2.5-1
 - new upstream version
 * Mon Apr  9 2007 Paul P. Komkoff Jr <i@stingr.net> - 0.2.4-2
