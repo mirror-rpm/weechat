@@ -1,7 +1,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.2.6
-Release:   1%{?dist}
+Release:   2%{?dist}
 Source:    http://weechat.flashtux.org/download/%{name}-%{version}.tar.bz2
 URL:       http://weechat.flashtux.org
 Group:     Applications/Communications
@@ -51,6 +51,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/plugins/*
 
 %changelog
+* Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 0.2.6-2
+- Autorebuild for GCC 4.3
+
 * Fri Oct 19 2007 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6-1
 - new upstream version, new license
 * Fri Jun  8 2007 Paul P. Komkoff Jr <i@stingr.net> - 0.2.5-1
