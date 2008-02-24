@@ -1,8 +1,9 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.2.6
-Release:   2%{?dist}
+Release:   3%{?dist}
 Source:    http://weechat.flashtux.org/download/%{name}-%{version}.tar.bz2
+Patch0:    weechat-pie-rollup.patch.bz2
 URL:       http://weechat.flashtux.org
 Group:     Applications/Communications
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
@@ -18,6 +19,7 @@ It is customizable and extensible with scripts.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 %configure \
@@ -31,6 +33,8 @@ make RPM_OPT_FLAGS="$RPM_OPT_FLAGS" %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR="$RPM_BUILD_ROOT"
 
+find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
+
 # This hardcoded docdir=... in Makefile.am is crap
 
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}/html .
@@ -43,7 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(-,root,root,0755) 
-%doc AUTHORS BUGS ChangeLog COPYING FAQ FAQ.fr INSTALL NEWS README TODO html weechat_quickstart*
+%doc AUTHORS BUGS ChangeLog COPYING FAQ FAQ.fr NEWS README TODO html weechat_quickstart*
 %{_mandir}/man1/%{name}-curses.1*
 %{_bindir}/%{name}-curses
 %dir %{_libdir}/%{name}
@@ -51,6 +55,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/plugins/*
 
 %changelog
+* Sun Feb 24 2008 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6-3
+- make weechat-curses a PIE
+- remove irrelevant INSTALL from docs
+- remove *.la from plugins
+
 * Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 0.2.6-2
 - Autorebuild for GCC 4.3
 
