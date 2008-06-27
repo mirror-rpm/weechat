@@ -1,7 +1,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.2.6
-Release:   3%{?dist}
+Release:   4%{?dist}
 Source:    http://weechat.flashtux.org/download/%{name}-%{version}.tar.bz2
 Patch0:    weechat-pie-rollup.patch.bz2
 URL:       http://weechat.flashtux.org
@@ -55,6 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/plugins/*
 
 %changelog
+* Fri Jun 27 2008 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6-4
+- rebuild because of ssl/tls deps
+
 * Sun Feb 24 2008 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6-3
 - make weechat-curses a PIE
 - remove irrelevant INSTALL from docs
