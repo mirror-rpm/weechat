@@ -1,7 +1,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.2.6
-Release:   5%{?dist}
+Release:   6%{?dist}
 Source:    http://weechat.flashtux.org/download/%{name}-%{version}.tar.bz2
 Patch0:    weechat-pie-rollup.patch.bz2
 URL:       http://weechat.flashtux.org
@@ -55,6 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/plugins/*
 
 %changelog
+* Sun Nov 30 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.2.6-6
+- Rebuild for Python 2.6
+
 * Sun Sep 21 2008 Ville Skyttä <ville.skytta at iki.fi> - 0.2.6-5
 - Fix Patch0:/%%patch mismatch.
 
