@@ -1,7 +1,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.2.6
-Release:   6%{?dist}
+Release:   7%{?dist}
 Source:    http://weechat.flashtux.org/download/%{name}-%{version}.tar.bz2
 Patch0:    weechat-pie-rollup.patch.bz2
 URL:       http://weechat.flashtux.org
@@ -55,6 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/plugins/*
 
 %changelog
+* Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.6-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Sun Nov 30 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.2.6-6
 - Rebuild for Python 2.6
 
