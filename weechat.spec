@@ -1,6 +1,6 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.2.6.2
+Version:   0.2.6.3
 Release:   1%{?dist}
 Source:    http://weechat.flashtux.org/download/%{name}-%{version}.tar.bz2
 Patch0:    %{name}-%{version}-pie-rollup.patch.bz2
@@ -55,6 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/plugins/*
 
 %changelog
+* Thu Jun 25 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6.3-1
+- gnutls detection bugfix
+
 * Fri May  1 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6.2-1
 - fix some charset decoding problems.
 
