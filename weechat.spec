@@ -1,60 +1,77 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.2.6.3
-Release:   2%{?dist}
-Source:    http://weechat.flashtux.org/download/%{name}-%{version}.tar.bz2
-Patch0:    %{name}-%{version}-pie-rollup.patch.bz2
-URL:       http://weechat.flashtux.org
+Version:   0.3.0
+Release:   1%{?dist}
+Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
+Patch0:    weechat-0.3.0-cmake-paths.patch
+Patch1:    weechat-0.3.0-cmake-pie.patch
+URL:       http://weechat.org
 Group:     Applications/Communications
-BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 License:   GPLv3
-BuildRequires: ncurses-devel python-devel perl ruby-devel 
+BuildRequires: ncurses-devel python-devel perl-devel ruby-devel 
 BuildRequires: gnutls-devel lua-devel aspell-devel
 BuildRequires: docbook-style-xsl gettext ruby
+BuildRequires: cmake perl-ExtUtils-Embed tcl-devel
 
 %description
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
 extensible IRC client. Everything can be done with a keyboard.
 It is customizable and extensible with scripts.
 
+%package devel
+Summary: Development files for weechat
+Group: Development/Libraries
+Requires: %{name} = %{version}-%{release} pkgconfig
+
+%description devel
+WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
+extensible IRC client. Everything can be done with a keyboard.
+It is customizable and extensible with scripts.
+
+This package contains include files and pc file for weechat.
+
 %prep
-%setup -q
-%patch0 -p1
+%setup -q -n %{name}-%{version}
+%patch0 -p1 -F 2
+%patch1 -p1
 
 %build
-%configure \
-  --disable-rpath \
-  --enable-static=no \
-  --with-doc-xsl-prefix=/usr/share/sgml/docbook/xsl-stylesheets
-
-make RPM_OPT_FLAGS="$RPM_OPT_FLAGS" %{?_smp_mflags}
+%cmake .
+make VERBOSE=1 %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR="$RPM_BUILD_ROOT"
 
-find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
-
-# This hardcoded docdir=... in Makefile.am is crap
-
-mv $RPM_BUILD_ROOT%{_docdir}/%{name}/html .
-mv $RPM_BUILD_ROOT%{_docdir}/%{name}/weechat_quickstart* .
-
 %find_lang %name
+
+%check
+ctest
 
 %clean
 rm -rf $RPM_BUILD_ROOT 
 
 %files -f %{name}.lang
 %defattr(-,root,root,0755) 
-%doc AUTHORS BUGS ChangeLog COPYING FAQ FAQ.fr NEWS README TODO html weechat_quickstart*
+%doc AUTHORS ChangeLog COPYING NEWS README
+%doc doc/en/weechat_faq.en.txt doc/en/weechat_quickstart.en.txt doc/en/weechat_scripting.en.txt
+%doc doc/en/weechat_user.en.txt
 %{_mandir}/man1/%{name}-curses.1*
 %{_bindir}/%{name}-curses
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
 %{_libdir}/%{name}/plugins/*
 
+%files devel
+%dir %{_includedir}/%{name}
+%dir %{_includedir}/%{name}/*
+%{_libdir}/pkgconfig/*.pc
+
 %changelog
+* Thu Sep 10 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.3.0-1
+- new, shiny version
+- new cmake-based build
+
 * Mon Jul 27 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.6.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 

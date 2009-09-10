@@ -1,0 +1,179 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f381d97..aae28ce 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -31,7 +31,7 @@ SET(VERSION_MINOR "3")
+ SET(VERSION_PATCH "1-dev")
+ SET(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+ SET(PKG_STRING "${PROJECT_NAME} ${VERSION}")
+-SET(LIBDIR ${CMAKE_INSTALL_PREFIX}/lib/${PROJECT_NAME})
++SET(LIBDIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/${PROJECT_NAME})
+ SET(SHAREDIR ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME})
+ SET(LOCALEDIR ${CMAKE_INSTALL_PREFIX}/share/locale)
+ SET(INCLUDEDIR ${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME})
+@@ -90,10 +90,10 @@ ADD_CUSTOM_TARGET(dist
+ SET(PACKAGE "${PROJECT_NAME}")
+ SET(prefix "${CMAKE_INSTALL_PREFIX}")
+ SET(exec_prefix "\${prefix}")
+-SET(libdir "\${exec_prefix}/lib")
++SET(libdir "\${exec_prefix}/lib${LIB_SUFFIX}")
+ SET(includedir "\${prefix}/include")
+ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/weechat.pc.in ${CMAKE_CURRENT_BINARY_DIR}/weechat.pc @ONLY)
+-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/weechat.pc DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
++INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/weechat.pc DESTINATION ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/pkgconfig)
+ 
+ # packages
+ SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Fast, light and extensible chat client")
+diff --git a/src/plugins/CMakeLists.txt b/src/plugins/CMakeLists.txt
+index 278374a..7f2d397 100644
+--- a/src/plugins/CMakeLists.txt
++++ b/src/plugins/CMakeLists.txt
+@@ -23,6 +23,8 @@ plugin-config.h plugin-config.c)
+ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR})
+ ADD_LIBRARY(weechat_plugins STATIC ${LIB_PLUGINS_SRC})
+ 
++SET(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/${PROJECT_NAME}/plugins)
++
+ INCLUDE(CheckIncludeFiles)
+ INCLUDE(CheckFunctionExists)
+ INCLUDE(CheckLibraryExists)
+diff --git a/src/plugins/alias/CMakeLists.txt b/src/plugins/alias/CMakeLists.txt
+index e863cf7..4d17e86 100644
+--- a/src/plugins/alias/CMakeLists.txt
++++ b/src/plugins/alias/CMakeLists.txt
+@@ -21,4 +21,4 @@ SET_TARGET_PROPERTIES(alias PROPERTIES PREFIX "")
+ 
+ TARGET_LINK_LIBRARIES(alias)
+ 
+-INSTALL(TARGETS alias LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS alias LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/aspell/CMakeLists.txt b/src/plugins/aspell/CMakeLists.txt
+index 1141ccd..775b1cc 100644
+--- a/src/plugins/aspell/CMakeLists.txt
++++ b/src/plugins/aspell/CMakeLists.txt
+@@ -25,4 +25,4 @@ IF(ASPELL_FOUND)
+   TARGET_LINK_LIBRARIES(aspell ${ASPELL_LIBRARY})
+ ENDIF(ASPELL_FOUND)
+ 
+-INSTALL(TARGETS aspell LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS aspell LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/charset/CMakeLists.txt b/src/plugins/charset/CMakeLists.txt
+index fdfd2e9..a3ef39c 100644
+--- a/src/plugins/charset/CMakeLists.txt
++++ b/src/plugins/charset/CMakeLists.txt
+@@ -26,4 +26,4 @@ IF(ICONV_FOUND)
+   ENDIF(ICONV_LIBRARY)
+ ENDIF(ICONV_FOUND)
+ 
+-INSTALL(TARGETS charset LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS charset LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/demo/CMakeLists.txt b/src/plugins/demo/CMakeLists.txt
+index 0e3a268..3765190 100644
+--- a/src/plugins/demo/CMakeLists.txt
++++ b/src/plugins/demo/CMakeLists.txt
+@@ -19,4 +19,4 @@ SET_TARGET_PROPERTIES(demo PROPERTIES PREFIX "")
+ 
+ TARGET_LINK_LIBRARIES(demo)
+ 
+-INSTALL(TARGETS demo LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS demo LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/fifo/CMakeLists.txt b/src/plugins/fifo/CMakeLists.txt
+index 5f8e831..6b4e9ed 100644
+--- a/src/plugins/fifo/CMakeLists.txt
++++ b/src/plugins/fifo/CMakeLists.txt
+@@ -21,4 +21,4 @@ SET_TARGET_PROPERTIES(fifo PROPERTIES PREFIX "")
+ 
+ TARGET_LINK_LIBRARIES(fifo)
+ 
+-INSTALL(TARGETS fifo LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS fifo LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/irc/CMakeLists.txt b/src/plugins/irc/CMakeLists.txt
+index a56c5e8..85d0610 100644
+--- a/src/plugins/irc/CMakeLists.txt
++++ b/src/plugins/irc/CMakeLists.txt
+@@ -46,4 +46,4 @@ ELSE(GNUTLS_FOUND)
+   TARGET_LINK_LIBRARIES(irc)
+ ENDIF(GNUTLS_FOUND)
+ 
+-INSTALL(TARGETS irc LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS irc LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/logger/CMakeLists.txt b/src/plugins/logger/CMakeLists.txt
+index 16d3e80..66b1087 100644
+--- a/src/plugins/logger/CMakeLists.txt
++++ b/src/plugins/logger/CMakeLists.txt
+@@ -24,4 +24,4 @@ SET_TARGET_PROPERTIES(logger PROPERTIES PREFIX "")
+ 
+ TARGET_LINK_LIBRARIES(logger)
+ 
+-INSTALL(TARGETS logger LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS logger LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/relay/CMakeLists.txt b/src/plugins/relay/CMakeLists.txt
+index 6622239..acaa6c6 100644
+--- a/src/plugins/relay/CMakeLists.txt
++++ b/src/plugins/relay/CMakeLists.txt
+@@ -27,4 +27,4 @@ SET_TARGET_PROPERTIES(relay PROPERTIES PREFIX "")
+ 
+ TARGET_LINK_LIBRARIES(relay)
+ 
+-INSTALL(TARGETS relay LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS relay LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/scripts/lua/CMakeLists.txt b/src/plugins/scripts/lua/CMakeLists.txt
+index cde09e6..e02016b 100644
+--- a/src/plugins/scripts/lua/CMakeLists.txt
++++ b/src/plugins/scripts/lua/CMakeLists.txt
+@@ -28,4 +28,4 @@ IF(LUA_FOUND)
+   ENDIF(LUA_LIBRARY AND LUALIB_LIBRARY)
+ ENDIF(LUA_FOUND)
+ 
+-INSTALL(TARGETS lua LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS lua LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/scripts/perl/CMakeLists.txt b/src/plugins/scripts/perl/CMakeLists.txt
+index 52950cf..bd70883 100644
+--- a/src/plugins/scripts/perl/CMakeLists.txt
++++ b/src/plugins/scripts/perl/CMakeLists.txt
+@@ -35,4 +35,4 @@ IF(PERL_FOUND)
+   ENDIF(PERL_DYNALOADER)
+ ENDIF(PERL_FOUND)
+ 
+-INSTALL(TARGETS perl LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS perl LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/scripts/python/CMakeLists.txt b/src/plugins/scripts/python/CMakeLists.txt
+index 8495c32..8d02c6e 100644
+--- a/src/plugins/scripts/python/CMakeLists.txt
++++ b/src/plugins/scripts/python/CMakeLists.txt
+@@ -25,4 +25,4 @@ IF(PYTHON_FOUND)
+   TARGET_LINK_LIBRARIES(python ${PYTHON_LIBRARY} weechat_scripts)
+ ENDIF(PYTHON_FOUND)
+ 
+-INSTALL(TARGETS python LIBRARY DESTINATION lib/weechat/plugins)
++INSTALL(TARGETS python LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/scripts/ruby/CMakeLists.txt b/src/plugins/scripts/ruby/CMakeLists.txt
+index 452e479..f8024bd 100644
+--- a/src/plugins/scripts/ruby/CMakeLists.txt
++++ b/src/plugins/scripts/ruby/CMakeLists.txt
+@@ -24,4 +24,4 @@ IF(RUBY_FOUND)
+   TARGET_LINK_LIBRARIES(ruby ${RUBY_LIBRARY} weechat_scripts)
+ ENDIF(RUBY_FOUND)
+ 
+-INSTALL(TARGETS ruby LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS ruby LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/scripts/tcl/CMakeLists.txt b/src/plugins/scripts/tcl/CMakeLists.txt
+index 58cbaa2..6fa86f1 100644
+--- a/src/plugins/scripts/tcl/CMakeLists.txt
++++ b/src/plugins/scripts/tcl/CMakeLists.txt
+@@ -29,4 +29,4 @@ IF(TCL_FOUND)
+ 
+ ENDIF(TCL_FOUND)
+ 
+-INSTALL(TARGETS tcl LIBRARY DESTINATION lib/weechat/plugins)
++INSTALL(TARGETS tcl LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})
+diff --git a/src/plugins/xfer/CMakeLists.txt b/src/plugins/xfer/CMakeLists.txt
+index 4d8e8f5..d9dcb92 100644
+--- a/src/plugins/xfer/CMakeLists.txt
++++ b/src/plugins/xfer/CMakeLists.txt
+@@ -30,4 +30,4 @@ SET_TARGET_PROPERTIES(xfer PROPERTIES PREFIX "")
+ 
+ TARGET_LINK_LIBRARIES(xfer)
+ 
+-INSTALL(TARGETS xfer LIBRARY DESTINATION lib/${PROJECT_NAME}/plugins)
++INSTALL(TARGETS xfer LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})

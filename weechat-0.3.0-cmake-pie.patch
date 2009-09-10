@@ -1,0 +1,69 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 50d2f01..6ea66f6 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -18,6 +18,7 @@ ADD_DEFINITIONS(-DHAVE_CONFIG_H)
+ 
+ INCLUDE(CheckIncludeFiles)
+ INCLUDE(CheckFunctionExists)
++INCLUDE(CheckCCompilerFlag)
+ 
+ CHECK_INCLUDE_FILES("arpa/inet.h" HAVE_ARPA_INET_H)
+ CHECK_INCLUDE_FILES("limits.h" HAVE_LIMITS_H)
+@@ -57,6 +58,13 @@ CHECK_FUNCTION_EXISTS(strpbrk HAVE_STRPBRK)
+ CHECK_FUNCTION_EXISTS(strrchr HAVE_STRRCHR)
+ CHECK_FUNCTION_EXISTS(strstr HAVE_STRSTR)
+ 
++CHECK_C_COMPILER_FLAG(-fPIE HAVE_FPIE_SUPPORT)
++if (HAVE_FPIE_SUPPORT)
++  set (WEECHAT_PIE_CFLAGS "-fPIE")
++  set (WEECHAT_PIE_LDFLAGS "-pie")
++else(HAVE_FPIE_SUPPORT)
++  message(STATUS "Your compiler doesn't support PIE flag")
++endif(HAVE_FPIE_SUPPORT)
+ 
+ #needs to be splitted in subdirectories
+ # FIXME: weechat_gui_common MUST be the first lib in the list
+diff --git a/src/core/CMakeLists.txt b/src/core/CMakeLists.txt
+index ae4b7b2..7dd537e 100644
+--- a/src/core/CMakeLists.txt
++++ b/src/core/CMakeLists.txt
+@@ -34,6 +34,8 @@ wee-upgrade-file.c wee-upgrade-file.h
+ wee-utf8.c wee-utf8.h
+ wee-util.c wee-util.h)
+ 
++SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${WEECHAT_PIE_CFLAGS}")
++
+ # Check for flock support
+ INCLUDE(CheckSymbolExists)
+ CHECK_INCLUDE_FILES("sys/file.h" HAVE_SYS_FILE_H)
+diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
+index a3c7342..be0341b 100644
+--- a/src/gui/CMakeLists.txt
++++ b/src/gui/CMakeLists.txt
+@@ -33,6 +33,11 @@ gui-main.h
+ gui-nicklist.c gui-nicklist.h
+ gui-window.c gui-window.h)
+ 
++SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${WEECHAT_PIE_CFLAGS}")
++SET(CMAKE_EXE_LINKER_FLAGS
++    "${CMAKE_EXE_LINKER_FLAGS} ${WEECHAT_PIE_LDFLAGS}")
++
++
+ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR})
+ ADD_LIBRARY(weechat_gui_common STATIC ${LIB_GUI_COMMON_SRC})
+ 
+diff --git a/src/plugins/CMakeLists.txt b/src/plugins/CMakeLists.txt
+index 7f2d397..293edb5 100644
+--- a/src/plugins/CMakeLists.txt
++++ b/src/plugins/CMakeLists.txt
+@@ -23,6 +23,9 @@ plugin-config.h plugin-config.c)
+ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR})
+ ADD_LIBRARY(weechat_plugins STATIC ${LIB_PLUGINS_SRC})
+ 
++SET_TARGET_PROPERTIES(weechat_plugins
++  PROPERTIES COMPILE_FLAGS "${WEECHAT_PIE_CFLAGS}")
++
+ SET(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/${PROJECT_NAME}/plugins)
+ 
+ INCLUDE(CheckIncludeFiles)
