@@ -1,15 +1,16 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.3.0
-Release:   1%{?dist}
+Release:   2%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-0.3.0-cmake-paths.patch
 Patch1:    weechat-0.3.0-cmake-pie.patch
+Patch2:    weechat-gitHEAD.enchant.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
 BuildRequires: ncurses-devel python-devel perl-devel ruby-devel 
-BuildRequires: gnutls-devel lua-devel aspell-devel
+BuildRequires: gnutls-devel lua-devel enchant-devel
 BuildRequires: docbook-style-xsl gettext ruby
 BuildRequires: cmake perl-ExtUtils-Embed tcl-devel
 
@@ -34,6 +35,7 @@ This package contains include files and pc file for weechat.
 %setup -q -n %{name}-%{version}
 %patch0 -p1 -F 2
 %patch1 -p1
+%patch2 -p1 -F 2
 
 %build
 %cmake .
@@ -68,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Sat Nov 28 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.3.0-2
+- use enchant as spelling provider (instead of aspell), patch by Caolan McNamara
+
 * Thu Sep 10 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.3.0-1
 - new, shiny version
 - new cmake-based build
