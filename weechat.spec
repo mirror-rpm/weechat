@@ -1,7 +1,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.3.0
-Release:   2%{?dist}
+Release:   3%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-0.3.0-cmake-paths.patch
 Patch1:    weechat-0.3.0-cmake-pie.patch
@@ -70,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Dec  7 2009 Stepan Kasal <skasal@redhat.com> - 0.3.0-3
+- rebuild against perl 5.10.1
+
 * Sat Nov 28 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.3.0-2
 - use enchant as spelling provider (instead of aspell), patch by Caolan McNamara
 
