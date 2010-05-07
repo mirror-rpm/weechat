@@ -3,9 +3,9 @@ Summary:   Portable, fast, light and extensible IRC client
 Version:   0.3.2
 Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
-Patch0:    weechat-0.3.2-cmake-paths.patch
-Patch1:    weechat-0.3.2-cmake-pie.patch
-Patch2:    weechat-gitHEAD.enchant.patch
+Patch0:    weechat-cmake-paths.patch
+Patch1:    weechat-cmake-pie.patch
+Patch2:    weechat-enchant.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -70,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri May  7 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.2-2
+- spec file fix
+
 * Thu May  6 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.2-1
 - new upstream version
 
