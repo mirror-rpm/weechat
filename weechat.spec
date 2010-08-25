@@ -1,7 +1,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.3.2
-Release:   3%{?dist}
+Version:   0.3.3
+Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-cmake-paths.patch
 Patch1:    weechat-cmake-pie.patch
@@ -33,9 +33,9 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1 -F 2
+%patch0 -p1
 %patch1 -p1
-%patch2 -p1 -F 2
+%patch2 -p1
 
 %build
 %cmake .
@@ -70,12 +70,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
-<<<<<<< HEAD
+* Wed Aug 25 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.3-1
+- new upstream version
+
 * Tue Jul 27 2010 David Malcolm <dmalcolm@redhat.com> - 0.3.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
 
-=======
->>>>>>> origin/el6/master
 * Fri May  7 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.2-2
 - spec file fix
 
