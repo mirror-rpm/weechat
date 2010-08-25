@@ -70,9 +70,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+<<<<<<< HEAD
 * Tue Jul 27 2010 David Malcolm <dmalcolm@redhat.com> - 0.3.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
 
+=======
+>>>>>>> origin/el6/master
 * Fri May  7 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.2-2
 - spec file fix
 
