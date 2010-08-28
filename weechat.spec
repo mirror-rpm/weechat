@@ -1,11 +1,12 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.3.3
-Release:   1%{?dist}
+Release:   2%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-cmake-paths.patch
 Patch1:    weechat-cmake-pie.patch
 Patch2:    weechat-enchant.patch
+Patch3:    weechat-python27.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -36,6 +37,7 @@ This package contains include files and pc file for weechat.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %cmake .
@@ -70,6 +72,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Sat Aug 28 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.3-2
+- fixed cmake config to accept python27
+
 * Wed Aug 25 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.3-1
 - new upstream version
 
