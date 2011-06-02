@@ -387,43 +387,8 @@ index eae43fe..7aa64b4 100644
 +aspell_la_LIBADD  = $(ASPELL_LFLAGS) $(ENCHANT_LIBS)
  
  EXTRA_DIST = CMakeLists.txt
-diff --git a/src/plugins/aspell/weechat-aspell-config.c b/src/plugins/aspell/weechat-aspell-config.c
-index c91b28b..67739a1 100644
---- a/src/plugins/aspell/weechat-aspell-config.c
-+++ b/src/plugins/aspell/weechat-aspell-config.c
-@@ -212,7 +212,7 @@ weechat_aspell_config_dict_create_option (void *data,
-     {
-         weechat_printf (NULL,
-                         _("%s%s: error creating aspell dictionary \"%s\" => \"%s\""),
--                        weechat_prefix ("error"), ASPELL_PLUGIN_NAME,
-+                        weechat_prefix ("error"), SPELL_PLUGIN_NAME,
-                         option_name, value);
-     }
-     else
-@@ -366,7 +366,7 @@ weechat_aspell_config_init ()
- {
-     struct t_config_section *ptr_section;
-     
--    weechat_aspell_config_file = weechat_config_new (ASPELL_CONFIG_NAME,
-+    weechat_aspell_config_file = weechat_config_new (SPELL_CONFIG_NAME,
-                                                      NULL, NULL);
-     if (!weechat_aspell_config_file)
-         return 0;
-diff --git a/src/plugins/aspell/weechat-aspell-config.h b/src/plugins/aspell/weechat-aspell-config.h
-index 4ac43fb..5cde37e 100644
---- a/src/plugins/aspell/weechat-aspell-config.h
-+++ b/src/plugins/aspell/weechat-aspell-config.h
-@@ -21,7 +21,7 @@
- #ifndef __WEECHAT_ASPELL_CONFIG_H
- #define __WEECHAT_ASPELL_CONFIG_H 1
- 
--#define ASPELL_CONFIG_NAME "aspell"
-+#define SPELL_CONFIG_NAME "spell"
- 
- 
- extern struct t_config_option *weechat_aspell_config_look_color;
 diff --git a/src/plugins/aspell/weechat-aspell-speller.c b/src/plugins/aspell/weechat-aspell-speller.c
-index 51822c4..bc9e07a 100644
+index 51822c4..d5803dc 100644
 --- a/src/plugins/aspell/weechat-aspell-speller.c
 +++ b/src/plugins/aspell/weechat-aspell-speller.c
 @@ -33,6 +33,9 @@
@@ -454,15 +419,6 @@ index 51822c4..bc9e07a 100644
  }
  
  /*
-@@ -93,7 +100,7 @@ weechat_aspell_speller_check_dictionaries (const char *dict_list)
-                     weechat_printf (NULL,
-                                     _("%s: warning: dictionary \"%s\" is not "
-                                       "available on your system"),
--                                    ASPELL_PLUGIN_NAME, argv[i]);
-+                                    SPELL_PLUGIN_NAME, argv[i]);
-                 }
-             }
-             weechat_string_free_split (argv);
 @@ -129,9 +136,13 @@ struct t_aspell_speller *
  weechat_aspell_speller_new (const char *lang)
  {
@@ -477,12 +433,8 @@ index 51822c4..bc9e07a 100644
      
      if (!lang)
          return NULL;
-@@ -140,9 +151,20 @@ weechat_aspell_speller_new (const char *lang)
-     {
-         weechat_printf (NULL,
-                         "%s: creating new speller for lang \"%s\"",
--                        ASPELL_PLUGIN_NAME, lang);
-+                        SPELL_PLUGIN_NAME, lang);
+@@ -143,6 +154,17 @@ weechat_aspell_speller_new (const char *lang)
+                         ASPELL_PLUGIN_NAME, lang);
      }
      
 +#ifdef USE_ENCHANT
@@ -491,7 +443,7 @@ index 51822c4..bc9e07a 100644
 +    {
 +        weechat_printf (NULL,
 +                        "%s%s: error: %s",
-+                        weechat_prefix ("error"), SPELL_PLUGIN_NAME,
++                        weechat_prefix ("error"), ASPELL_PLUGIN_NAME,
 +                        lang);
 +        return NULL;
 +    }
@@ -499,14 +451,7 @@ index 51822c4..bc9e07a 100644
      /* create a speller instance for the newly created cell */
      config = new_aspell_config();
      aspell_config_replace (config, "lang", lang);
-@@ -166,24 +188,29 @@ weechat_aspell_speller_new (const char *lang)
-     {
-         weechat_printf (NULL,
-                         "%s%s: error: %s",
--                        weechat_prefix ("error"), ASPELL_PLUGIN_NAME,
-+                        weechat_prefix ("error"), SPELL_PLUGIN_NAME,
-                         aspell_error_message (ret));
-         delete_aspell_config (config);
+@@ -172,7 +194,8 @@ weechat_aspell_speller_new (const char *lang)
          delete_aspell_can_have_error (ret);
          return NULL;
      }
@@ -516,11 +461,7 @@ index 51822c4..bc9e07a 100644
      /* create and add a new speller cell */
      new_speller = malloc (sizeof (*new_speller));
      if (!new_speller)
-     {
-         weechat_printf (NULL,
-                         _("%s%s: not enough memory to create new speller"),
--                        weechat_prefix ("error"), ASPELL_PLUGIN_NAME);
-+                        weechat_prefix ("error"), SPELL_PLUGIN_NAME);
+@@ -183,7 +206,11 @@ weechat_aspell_speller_new (const char *lang)
          return NULL;
      }
      
@@ -543,14 +484,7 @@ index 51822c4..bc9e07a 100644
      
      return new_speller;
  }
-@@ -215,14 +244,18 @@ weechat_aspell_speller_free (struct t_aspell_speller *speller)
-     {
-         weechat_printf (NULL,
-                         "%s: removing speller for lang \"%s\"",
--                        ASPELL_PLUGIN_NAME, speller->lang);
-+                        SPELL_PLUGIN_NAME, speller->lang);
-     }
-     
+@@ -221,8 +250,12 @@ weechat_aspell_speller_free (struct t_aspell_speller *speller)
      /* free data */
      if (speller->speller)
      {
@@ -580,18 +514,9 @@ index 06156ec..9d503dc 100644
      
      struct t_aspell_speller *prev_speller; /* pointer to next speller       */
 diff --git a/src/plugins/aspell/weechat-aspell.c b/src/plugins/aspell/weechat-aspell.c
-index cd37a86..4c2de78 100644
+index cd37a86..2372595 100644
 --- a/src/plugins/aspell/weechat-aspell.c
 +++ b/src/plugins/aspell/weechat-aspell.c
-@@ -35,7 +35,7 @@
- #include "weechat-aspell-speller.h"
- 
- 
--WEECHAT_PLUGIN_NAME(ASPELL_PLUGIN_NAME);
-+WEECHAT_PLUGIN_NAME(SPELL_PLUGIN_NAME);
- WEECHAT_PLUGIN_DESCRIPTION("Aspell plugin for WeeChat");
- WEECHAT_PLUGIN_AUTHOR("Sebastien Helleu <flashcode@flashtux.org>");
- WEECHAT_PLUGIN_VERSION(WEECHAT_VERSION);
 @@ -48,6 +48,10 @@ struct t_gui_buffer *aspell_buffer_spellers = NULL;
  char *aspell_last_modifier_string = NULL; /* last str. received by modifier */
  char *aspell_last_modifier_result = NULL; /* last str. built by modifier    */
@@ -603,19 +528,6 @@ index cd37a86..4c2de78 100644
  /* aspell supported langs (updated on of 2008-10-17) */
  struct t_aspell_code langs_avail[] =
  {
-@@ -257,10 +261,10 @@ weechat_aspell_set_dict (struct t_gui_buffer *buffer, const char *value)
-     {
-         if (value && value[0])
-             weechat_printf (NULL, "%s: \"%s\" => %s",
--                            ASPELL_PLUGIN_NAME, name, value);
-+                            SPELL_PLUGIN_NAME, name, value);
-         else
-             weechat_printf (NULL, _("%s: \"%s\" removed"),
--                            ASPELL_PLUGIN_NAME, name);
-+                            SPELL_PLUGIN_NAME, name);
-     }
-     
-     free (name);
 @@ -381,6 +385,55 @@ weechat_aspell_iso_to_country (const char *code)
      return strdup ("Unknown");
  }
@@ -690,12 +602,10 @@ index cd37a86..4c2de78 100644
 + 
      weechat_printf (NULL, "");
      weechat_printf (NULL,
--                    /* TRANSLATORS: "%s" is "aspell" */
-+                    /* TRANSLATORS: %s is "spell" */
+                     /* TRANSLATORS: "%s" is "aspell" */
                      _( "%s dictionaries list:"),
--                    ASPELL_PLUGIN_NAME);
+                     ASPELL_PLUGIN_NAME);
 -    
-+                    SPELL_PLUGIN_NAME);
 +
 +#ifdef USE_ENCHANT
 +    enchant_broker_list_dicts(broker, EnchantDictDescribe, NULL);
@@ -711,16 +621,7 @@ index cd37a86..4c2de78 100644
  }
  
  /*
-@@ -478,7 +538,7 @@ weechat_aspell_add_word (const char *lang, const char *word)
-             weechat_printf (NULL,
-                             _("%s: error: dictionary \"%s\" is not "
-                               "available on your system"),
--                            ASPELL_PLUGIN_NAME, lang);
-+                            SPELL_PLUGIN_NAME, lang);
-             return;
-         }
-         new_speller = weechat_aspell_speller_new (lang);
-@@ -487,21 +547,25 @@ weechat_aspell_add_word (const char *lang, const char *word)
+@@ -487,6 +547,9 @@ weechat_aspell_add_word (const char *lang, const char *word)
          ptr_speller = new_speller;
      }
  
@@ -730,19 +631,9 @@ index cd37a86..4c2de78 100644
      if (aspell_speller_add_to_personal (ptr_speller->speller,
                                          word,
                                          strlen (word)) == 1)
-     {
-         weechat_printf (NULL,
-                         _("%s: word \"%s\" added to personal dictionary"),
--                        ASPELL_PLUGIN_NAME, word);
-+                        SPELL_PLUGIN_NAME, word);
-     }
-     else
-     {
-         weechat_printf (NULL,
-                         _("%s%s: failed to add word to personal "
+@@ -502,6 +565,7 @@ weechat_aspell_add_word (const char *lang, const char *word)
                            "dictionary"),
--                        weechat_prefix ("error"), ASPELL_PLUGIN_NAME);
-+                        weechat_prefix ("error"), SPELL_PLUGIN_NAME);
+                         weechat_prefix ("error"), ASPELL_PLUGIN_NAME);
      }
 +#endif
      
@@ -760,24 +651,6 @@ index cd37a86..4c2de78 100644
                          {
                              rc = 1;
                              break;
-@@ -873,7 +941,7 @@ weechat_aspell_command_cb (void *data, struct t_gui_buffer *buffer,
-                                     _("%s%s: no dictionary on this buffer for "
-                                       "adding word"),
-                                     weechat_prefix ("error"),
--                                    ASPELL_PLUGIN_NAME);
-+                                    SPELL_PLUGIN_NAME);
-                 }
-                 else if (weechat_aspell_spellers->next_speller)
-                 {
-@@ -881,7 +949,7 @@ weechat_aspell_command_cb (void *data, struct t_gui_buffer *buffer,
-                                     _("%s%s: many dictionaries are defined for "
-                                       "this buffer, please specify dictionary"),
-                                     weechat_prefix ("error"),
--                                    ASPELL_PLUGIN_NAME);
-+                                    SPELL_PLUGIN_NAME);
-                 }
-                 else
-                     weechat_aspell_add_word (weechat_aspell_spellers->lang,
 @@ -948,6 +1016,13 @@ weechat_plugin_init (struct t_weechat_plugin *plugin, int argc, char *argv[])
      (void) argv;
      
@@ -792,43 +665,16 @@ index cd37a86..4c2de78 100644
      
      if (!weechat_aspell_config_init ())
          return WEECHAT_RC_ERROR;
-@@ -963,20 +1038,20 @@ weechat_plugin_init (struct t_weechat_plugin *plugin, int argc, char *argv[])
-                              " || disable"
-                              " || addword [<lang>] <word>"),
-                           N_("dictlist: show installed dictionaries\n"
--                             "  enable: enable aspell on current buffer\n"
--                             " disable: disable aspell on current buffer\n"
--                             " addword: add a word in your personal aspell "
-+                             "  enable: enable spell on current buffer\n"
-+                             " disable: disable spell on current buffer\n"
-+                             " addword: add a word in your personal spell "
-                              "dictionary\n"
-                              "\n"
-                              "Input line beginning with a '/' is not checked, "
-                              "except for some commands."),
-                           "dictlist"
--                          " || enable %(aspell_langs)"
-+                          " || enable %(spell_langs)"
-                           " || disable"
-                           " || addword",
-                           &weechat_aspell_command_cb, NULL);
--    weechat_hook_completion ("aspell_langs",
--                             N_("list of supported langs for aspell"),
-+    weechat_hook_completion ("spell_langs",
-+                             N_("list of supported langs for spell"),
-                              &weechat_aspell_completion_langs_cb, NULL);
-     
-     /*
-@@ -986,6 +1061,8 @@ weechat_plugin_init (struct t_weechat_plugin *plugin, int argc, char *argv[])
+@@ -986,7 +1061,7 @@ weechat_plugin_init (struct t_weechat_plugin *plugin, int argc, char *argv[])
       */
      weechat_hook_modifier ("500|input_text_display",
                             &weechat_aspell_modifier_cb, NULL);
+-    
 +   
-+    weechat_aspell_create_spellers (weechat_current_buffer ());
-     
      return WEECHAT_RC_OK;
  }
-@@ -1010,6 +1087,11 @@ weechat_plugin_end (struct t_weechat_plugin *plugin)
+ 
+@@ -1010,6 +1085,11 @@ weechat_plugin_end (struct t_weechat_plugin *plugin)
          free (aspell_last_modifier_result);
      
      weechat_aspell_config_free ();
@@ -841,10 +687,10 @@ index cd37a86..4c2de78 100644
      return WEECHAT_RC_OK;
  }
 diff --git a/src/plugins/aspell/weechat-aspell.h b/src/plugins/aspell/weechat-aspell.h
-index 88f6368..3d40558 100644
+index 88f6368..743b818 100644
 --- a/src/plugins/aspell/weechat-aspell.h
 +++ b/src/plugins/aspell/weechat-aspell.h
-@@ -21,10 +21,14 @@
+@@ -21,7 +21,11 @@
  #ifndef __WEECHAT_ASPELL_H
  #define __WEECHAT_ASPELL_H 1
  
@@ -856,11 +702,7 @@ index 88f6368..3d40558 100644
 +#endif
  
  #define weechat_plugin weechat_aspell_plugin
--#define ASPELL_PLUGIN_NAME "aspell"
-+#define SPELL_PLUGIN_NAME "spell"
- 
- struct t_aspell_code
- {
+ #define ASPELL_PLUGIN_NAME "aspell"
 diff --git a/src/plugins/charset/CMakeLists.txt b/src/plugins/charset/CMakeLists.txt
 index a49ab8b..6c915bc 100644
 --- a/src/plugins/charset/CMakeLists.txt
