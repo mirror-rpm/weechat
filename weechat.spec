@@ -62,7 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %dir %{_includedir}/%{name}
-%dir %{_includedir}/%{name}/*
+%{_includedir}/%{name}/weechat-plugin.h
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
