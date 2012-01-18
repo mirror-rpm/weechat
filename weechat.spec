@@ -69,6 +69,9 @@ rm -rf $RPM_BUILD_ROOT
 * Wed Jan 18 2012 Paul P. Komkoff Jr <i@stingr.net> - 0.3.6-1
 - new upstream version
 
+* Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3.5-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Thu Nov 10 2011 Paul P. Komkoff Jr <i@stingr.net> - 0.3.5-2
 - rebuilt
 
