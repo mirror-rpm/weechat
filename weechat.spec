@@ -1,11 +1,9 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.3.2
-Release:   2%{?dist}
+Version:   0.3.6
+Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
-Patch0:    weechat-cmake-paths.patch
-Patch1:    weechat-cmake-pie.patch
-Patch2:    weechat-enchant.patch
+Patch0:    weechat-combined.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -33,9 +31,7 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1 -F 2
-%patch1 -p1
-%patch2 -p1 -F 2
+%patch0 -p1
 
 %build
 %cmake .
@@ -66,10 +62,37 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %dir %{_includedir}/%{name}
-%dir %{_includedir}/%{name}/*
+%{_includedir}/%{name}/weechat-plugin.h
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Thu Mar 8 2012 Russell Golden <niveusluna@niveusluna.org> - 0.3.7-1
+- new upstream version
+
+* Wed Jan 18 2012 Paul P. Komkoff Jr <i@stingr.net> - 0.3.6-1
+- new upstream version
+
+* Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3.5-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
+* Thu Nov 10 2011 Paul P. Komkoff Jr <i@stingr.net> - 0.3.5-2
+- rebuilt
+
+* Thu Jun  2 2011 Paul P. Komkoff Jr <i@stingr.net> - 0.3.5-1
+- new upstream version
+
+* Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
+* Sat Aug 28 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.3-2
+- fixed cmake config to accept python27
+
+* Wed Aug 25 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.3-1
+- new upstream version
+
+* Tue Jul 27 2010 David Malcolm <dmalcolm@redhat.com> - 0.3.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
+
 * Fri May  7 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.2-2
 - spec file fix
 
