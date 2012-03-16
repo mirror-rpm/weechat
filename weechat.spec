@@ -11,6 +11,7 @@ BuildRequires: ncurses-devel python-devel perl-devel ruby-devel
 BuildRequires: gnutls-devel lua-devel enchant-devel
 BuildRequires: docbook-style-xsl gettext ruby
 BuildRequires: cmake perl-ExtUtils-Embed tcl-devel
+BuildRequires: libcurl-devel
 
 %description
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
