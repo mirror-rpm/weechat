@@ -1,6 +1,6 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.3.6
+Version:   0.3.7
 Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-combined.patch
@@ -11,6 +11,7 @@ BuildRequires: ncurses-devel python-devel perl-devel ruby-devel
 BuildRequires: gnutls-devel lua-devel enchant-devel
 BuildRequires: docbook-style-xsl gettext ruby
 BuildRequires: cmake perl-ExtUtils-Embed tcl-devel
+BuildRequires: libcurl-devel
 
 %description
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
@@ -66,8 +67,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
-* Thu Mar 8 2012 Russell Golden <niveusluna@niveusluna.org> - 0.3.7-1
+<<<<<<< HEAD
+* Sun Mar 18 2012 Russell Golden <niveusluna@niveusluna.org> - 0.3.7-1
 - new upstream version
+
+* Wed Feb 08 2012 Bohuslav Kabrda <bkabrda@redhat.com> - 0.3.6-2
+- Rebuilt for Ruby 1.9.3.
 
 * Wed Jan 18 2012 Paul P. Komkoff Jr <i@stingr.net> - 0.3.6-1
 - new upstream version
