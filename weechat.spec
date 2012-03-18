@@ -67,7 +67,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
-<<<<<<< HEAD
 * Sun Mar 18 2012 Russell Golden <niveusluna@niveusluna.org> - 0.3.7-1
 - new upstream version
 
