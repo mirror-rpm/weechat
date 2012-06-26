@@ -1,6 +1,6 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.3.7
+Version:   0.3.8
 Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-combined.patch
@@ -67,6 +67,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Jun 26 2012 Russell Golden <niveusluna@niveusluna.org> - 0.3.8-1
+- New upstream version
+
 * Fri Mar 16 2012 Paul P. Komkoff Jr <i@stingr.net> - 0.3.7-1
 - new upstream version
 
