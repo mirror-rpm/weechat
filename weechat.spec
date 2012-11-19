@@ -1,10 +1,11 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.3.8
-Release:   3%{?dist}
+Release:   4%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-combined.patch
 Patch1:    weechat-fix-0.patch
+Patch2:    weechat-fix-1.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -35,6 +36,7 @@ This package contains include files and pc file for weechat.
 %setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %cmake .
@@ -69,6 +71,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Nov 19 2012 Paul P. Komkoff Jr <i@stingr.net> - 0.3.8-4
+- fix bz#878025
+
 * Fri Nov 09 2012 Paul P. Komkoff Jr <i@stingr.net> - 0.3.8-3
 - fix bz#875181
 
