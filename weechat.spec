@@ -1,7 +1,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.3.9.2
-Release:   1%{?dist}
+Release:   2%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-combined.patch
 URL:       http://weechat.org
@@ -11,7 +11,7 @@ BuildRequires: ncurses-devel python-devel perl-devel ruby-devel
 BuildRequires: gnutls-devel lua-devel enchant-devel
 BuildRequires: docbook-style-xsl gettext ruby
 BuildRequires: cmake perl-ExtUtils-Embed tcl-devel
-BuildRequires: libcurl-devel
+BuildRequires: libcurl-devel zlib-devel pkgconfig
 
 %description
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
@@ -67,6 +67,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Sun Dec 02 2012 Paul Komkoff <i@stingr.net> - 0.3.9.2-2
+- add zlib-devel dependency for epel6/ppc build
+
 * Sat Dec  1 2012 Paul P. Komkoff Jr <i@stingr.net> - 0.3.9.2-1
 - new upstream, long overdue
 
