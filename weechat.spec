@@ -1,9 +1,9 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.3.9.2
-Release:   2%{?dist}
+Version:   0.4.0
+Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
-Patch0:    weechat-combined.patch
+Patch0:    weechat-0.4.0-pie.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -35,12 +35,19 @@ This package contains include files and pc file for weechat.
 %patch0 -p1
 
 %build
-%cmake .
+mkdir build
+pushd build
+%cmake \
+  -DPREFIX=%{_prefix} \
+  -DLIBDIR=%{_libdir} \
+  ..
 make VERBOSE=1 %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+pushd build
 make install DESTDIR="$RPM_BUILD_ROOT"
+popd
 
 %find_lang %name
 
@@ -67,6 +74,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Jan 21 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-1
+- update to upstream release 0.4.0
+- add CMAKE options (DPREFIX and DLIBDIR) which negate the need to patch
+- remove enchant patches to keep close to upstream
+
 * Sun Dec 02 2012 Paul Komkoff <i@stingr.net> - 0.3.9.2-2
 - add zlib-devel dependency for epel6/ppc build
 
