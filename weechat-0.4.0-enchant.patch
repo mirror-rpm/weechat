@@ -1,0 +1,530 @@
+diff -Naur a/cmake/FindENCHANT.cmake b/cmake/FindENCHANT.cmake
+--- a/cmake/FindENCHANT.cmake
++++ b/cmake/FindENCHANT.cmake
+@@ -0,0 +1,44 @@
++# - Try to find the Enchant spell checker
++# Once done this will define
++#
++#  ENCHANT_FOUND - system has ENCHANT
++#  ENCHANT_INCLUDE_DIR - the ENCHANT include directory
++#  ENCHANT_LIBRARIES - Link these to use ENCHANT
++#  ENCHANT_DEFINITIONS - Compiler switches required for using ENCHANT
++
++# Copyright (c) 2006, Zack Rusin, <zack@kde.org>
++#
++# Redistribution and use is allowed according to the terms of the BSD license.
++# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
++
++
++if (ENCHANT_INCLUDE_DIR AND ENCHANT_LIBRARIES)
++
++  # in cache already
++  set(ENCHANT_FOUND TRUE)
++
++else (ENCHANT_INCLUDE_DIR AND ENCHANT_LIBRARIES)
++  if (NOT WIN32)
++    # use pkg-config to get the directories and then use these values
++    # in the FIND_PATH() and FIND_LIBRARY() calls
++    find_package(PkgConfig)
++    pkg_check_modules(PC_ENCHANT QUIET enchant)
++    set(ENCHANT_DEFINITIONS ${PC_ENCHANT_CFLAGS_OTHER})
++  endif (NOT WIN32)
++
++  find_path(ENCHANT_INCLUDE_DIR
++            NAMES enchant++.h
++            HINTS ${PC_ENCHANT_INCLUDEDIR}
++                  ${PC_ENCHANT_INCLUDE_DIRS}
++            PATH_SUFFIXES enchant )
++
++  find_library(ENCHANT_LIBRARIES NAMES enchant
++               HINTS ${PC_ENCHANT_LIBDIR}
++                      ${PC_ENCHANT_LIBRARY_DIRS} )
++
++  include(FindPackageHandleStandardArgs)
++  find_package_handle_standard_args(ENCHANT  DEFAULT_MSG  ENCHANT_INCLUDE_DIR ENCHANT_LIBRARIES )
++
++  mark_as_advanced(ENCHANT_INCLUDE_DIR ENCHANT_LIBRARIES)
++
++endif (ENCHANT_INCLUDE_DIR AND ENCHANT_LIBRARIES)
+diff -Naur a/configure.in b/configure.in
+--- a/configure.in
++++ b/configure.in
+@@ -294,24 +294,29 @@
+ # ---------------------------------- aspell ------------------------------------
+
+ if test "x$enable_aspell" = "xyes" ; then
+-    ASPELL_CFLAGS=""
+-    ASPELL_LFLAGS=""
++    # Check ENCHANT is available
++    PKG_CHECK_MODULES(ENCHANT, [enchant], [CFLAGS="$CFLAGS -DUSE_ENCHANT"],
++    # otherwise Check ASPELL is available
++    [
++        ASPELL_CFLAGS=""
++        ASPELL_LFLAGS=""
+
+-    AC_CHECK_HEADER(aspell.h,ac_found_aspell_header="yes",ac_found_aspell_header="no")
+-    AC_CHECK_LIB(aspell,new_aspell_speller,ac_found_aspell_lib="yes",ac_found_aspell_lib="no")
++        AC_CHECK_HEADER(aspell.h,ac_found_aspell_header="yes",ac_found_aspell_header="no")
++        AC_CHECK_LIB(aspell,new_aspell_speller,ac_found_aspell_lib="yes",ac_found_aspell_lib="no")
+
+-    AC_MSG_CHECKING(for aspell headers and librairies)
+-    if test "x$ac_found_aspell_header" = "xno" -o "x$ac_found_aspell_lib" = "xno" ; then
+-       AC_MSG_RESULT(no)
+-       AC_MSG_WARN([
++        AC_MSG_CHECKING(for aspell headers and librairies)
++        if test "x$ac_found_aspell_header" = "xno" -o "x$ac_found_aspell_lib" = "xno" ; then
++           AC_MSG_RESULT(no)
++           AC_MSG_WARN([
+ *** Aspell headers and/or libraries couldn't be found on your system.
+ *** Try to install them with your software package manager.
+ *** WeeChat will be built without Aspell support.])
+-       enable_aspell="no"
+-       not_found="$not_found aspell"
+-    else
+-        AC_MSG_RESULT(yes)
+-        ASPELL_LFLAGS="$ASPELL_LFLAGS -laspell"
++           enable_aspell="no"
++           not_found="$not_found aspell"
++        else
++           AC_MSG_RESULT(yes)
++           ASPELL_LFLAGS="$ASPELL_LFLAGS -laspell"
++        fi
+     fi
+ else
+     not_asked="$not_asked aspell"
+diff -Naur a/Makefile.am b/Makefile.am
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -39,6 +39,7 @@
+              cmake/CMakeParseArguments.cmake \
+              cmake/FindAsciidoc.cmake \
+              cmake/FindAspell.cmake \
++             cmake/FindENCHANT.cmake \
+              cmake/FindGCRYPT.cmake \
+              cmake/FindGettext.cmake \
+              cmake/FindGnuTLS.cmake \
+diff -Naur a/src/plugins/aspell/CMakeLists.txt b/src/plugins/aspell/CMakeLists.txt
+--- a/src/plugins/aspell/CMakeLists.txt
++++ b/src/plugins/aspell/CMakeLists.txt
+@@ -25,9 +25,15 @@
+ weechat-aspell-speller.c weechat-aspell-speller.h)
+ SET_TARGET_PROPERTIES(aspell PROPERTIES PREFIX "")
+
+-IF(ASPELL_FOUND)
+-  INCLUDE_DIRECTORIES(${ASPELL_INCLUDE_PATH})
+-  TARGET_LINK_LIBRARIES(aspell ${ASPELL_LIBRARY})
+-ENDIF(ASPELL_FOUND)
++IF(ENCHANT_FOUND)
++  INCLUDE_DIRECTORIES(${ENCHANT_INCLUDE_DIR})
++  TARGET_LINK_LIBRARIES(aspell ${ENCHANT_LIBRARIES})
++  ADD_DEFINITIONS(-DUSE_ENCHANT)
++ELSE(ENCHANT_FOUND)
++  IF(ASPELL_FOUND)
++    INCLUDE_DIRECTORIES(${ASPELL_INCLUDE_PATH})
++    TARGET_LINK_LIBRARIES(aspell ${ASPELL_LIBRARY})
++  ENDIF(ASPELL_FOUND)
++ENDIF(ENCHANT_FOUND)
+
+ INSTALL(TARGETS aspell LIBRARY DESTINATION ${LIBDIR}/plugins)
+diff -Naur a/src/plugins/aspell/Makefile.am b/src/plugins/aspell/Makefile.am
+--- a/src/plugins/aspell/Makefile.am
++++ b/src/plugins/aspell/Makefile.am
+@@ -18,7 +18,7 @@
+ # along with WeeChat.  If not, see <http://www.gnu.org/licenses/>.
+ #
+
+-INCLUDES = -DLOCALEDIR=\"$(datadir)/locale\" $(ASPELL_CFLAGS)
++INCLUDES = -DLOCALEDIR=\"$(datadir)/locale\" $(ASPELL_CFLAGS) $(ENCHANT_CFLAGS)
+
+ libdir = ${weechat_libdir}/plugins
+
+@@ -33,6 +33,6 @@
+                     weechat-aspell-speller.c \
+                     weechat-aspell-speller.h
+ aspell_la_LDFLAGS = -module
+-aspell_la_LIBADD  = $(ASPELL_LFLAGS)
++aspell_la_LIBADD  = $(ASPELL_LFLAGS) $(ENCHANT_LIBS)
+
+ EXTRA_DIST = CMakeLists.txt
+diff -Naur a/src/plugins/aspell/weechat-aspell.c b/src/plugins/aspell/weechat-aspell.c
+--- a/src/plugins/aspell/weechat-aspell.c
++++ b/src/plugins/aspell/weechat-aspell.c
+@@ -49,6 +49,10 @@
+ int aspell_last_buffer_input_pos = -1;    /* last cursor position           */
+ char *aspell_last_modifier_result = NULL; /* last str. built by modifier    */
+
++#ifdef USE_ENCHANT
++EnchantBroker *broker;
++#endif
++
+ /*
+  * aspell supported langs, updated on 2012-07-05
+  * URL: ftp://ftp.gnu.org/gnu/aspell/dict/0index.html
+@@ -409,6 +413,55 @@
+     return strdup ("Unknown");
+ }
+
++#ifdef USE_ENCHANT
++void EnchantDictDescribe(const char * const lang_tag,
++    const char * const provider_name,
++    const char * const provider_desc,
++    const char * const provider_file,
++    void * user_data)
++{
++    char *country, *lang, *pos;
++    char buffer[192];
++    (void)provider_name;
++    (void)provider_desc;
++    (void)provider_file;
++    (void)user_data;
++
++    country = NULL;
++    pos = strchr (lang_tag, '_');
++    if (!pos)
++        pos = strchr (lang_tag, '-');
++
++    if (pos)
++    {
++        pos[0] = '\0';
++        lang = weechat_aspell_iso_to_lang ((char*)lang_tag);
++        pos[0] = '_';
++        country = weechat_aspell_iso_to_country (pos + 1);
++    }
++    else
++        lang = weechat_aspell_iso_to_lang ((char*)lang_tag);
++
++    if (pos)
++    {
++        snprintf (buffer, sizeof (buffer), "%-22s %s (%s)",
++                  lang_tag, lang, country);
++    }
++    else
++    {
++        snprintf (buffer, sizeof (buffer), "%-22s %s",
++                  lang_tag, lang);
++    }
++
++    weechat_printf (NULL, "  %s", buffer);
++
++    if (lang)
++        free (lang);
++    if (country)
++        free (country);
++}
++#endif
++
+ /*
+  * Displays list of aspell dictionaries installed on system.
+  */
+@@ -416,6 +469,7 @@
+ void
+ weechat_aspell_speller_list_dicts ()
+ {
++#ifndef USE_ENCHANT
+     char *country, *lang, *pos;
+     char buffer[192];
+     struct AspellConfig *config;
+@@ -426,6 +480,7 @@
+     config = new_aspell_config();
+     list = get_aspell_dict_info_list (config);
+     elements = aspell_dict_info_list_elements (list);
++#endif
+
+     weechat_printf (NULL, "");
+     weechat_printf (NULL,
+@@ -433,6 +488,9 @@
+                     _( "%s dictionaries list:"),
+                     ASPELL_PLUGIN_NAME);
+
++#ifdef USE_ENCHANT
++    enchant_broker_list_dicts(broker, EnchantDictDescribe, NULL);
++#else
+     while ((dict = aspell_dict_info_enumeration_next (elements)) != NULL)
+     {
+         country = NULL;
+@@ -485,6 +543,7 @@
+
+     delete_aspell_dict_info_enumeration (elements);
+     delete_aspell_config (config);
++#endif
+ }
+
+ /*
+@@ -514,6 +573,9 @@
+         ptr_speller = new_speller;
+     }
+
++#ifdef USE_ENCHANT
++    enchant_dict_add(ptr_speller->speller, word, strlen(word));
++#else
+     if (aspell_speller_add_to_personal (ptr_speller->speller,
+                                         word,
+                                         strlen (word)) == 1)
+@@ -529,6 +591,7 @@
+                           "dictionary"),
+                         weechat_prefix ("error"), ASPELL_PLUGIN_NAME);
+     }
++#endif
+
+     if (new_speller)
+         weechat_aspell_speller_free (new_speller);
+@@ -664,7 +727,11 @@
+     for (ptr_speller = weechat_aspell_spellers; ptr_speller;
+          ptr_speller = ptr_speller->next_speller)
+     {
++#ifdef USE_ENCHANT
++        if (enchant_dict_check(ptr_speller->speller, word, strlen(word)) == 0)
++#else
+         if (aspell_speller_check (ptr_speller->speller, word, -1) == 1)
++#endif
+         {
+             return 1;
+         }
+@@ -689,8 +756,13 @@
+     int size, max_suggestions, num_suggestions;
+     char *suggestions, *suggestions2;
+     const char *ptr_word;
++#ifdef USE_ENCHANT
++    char **elements;
++    size_t n_elements;
++#else
+     const AspellWordList *list;
+     AspellStringEnumeration *elements;
++#endif
+
+     max_suggestions = weechat_config_integer (weechat_aspell_config_check_suggestions);
+     if (max_suggestions < 0)
+@@ -705,6 +777,33 @@
+     for (ptr_speller = weechat_aspell_spellers; ptr_speller;
+          ptr_speller = ptr_speller->next_speller)
+     {
++#ifdef USE_ENCHANT
++        elements = enchant_dict_suggest (ptr_speller->speller, word, -1, &n_elements);
++        if (elements && n_elements)
++        {
++            num_suggestions = 0;
++            while ((ptr_word = elements[num_suggestions]) != NULL)
++            {
++                size += strlen (ptr_word) + ((suggestions[0]) ? 1 : 0);
++                suggestions2 = realloc (suggestions, size);
++                if (!suggestions2)
++                {
++                    free (suggestions);
++                    enchant_dict_free_string_list (ptr_speller->speller, elements);
++                    return NULL;
++                }
++                suggestions = suggestions2;
++                if (suggestions[0])
++                    strcat (suggestions, (num_suggestions == 0) ? "/" : ",");
++                strcat (suggestions, ptr_word);
++                num_suggestions++;
++                if ((max_suggestions >= 0) && (num_suggestions == max_suggestions))
++                    break;
++            }
++            enchant_dict_free_string_list (ptr_speller->speller, elements);
++        }
++    }
++#else
+         list = aspell_speller_suggest (ptr_speller->speller, word, -1);
+         if (list)
+         {
+@@ -731,6 +830,7 @@
+             delete_aspell_string_enumeration (elements);
+         }
+     }
++#endif
+
+     /* no suggestions found */
+     if (!suggestions[0])
+@@ -1269,6 +1369,13 @@
+
+     weechat_plugin = plugin;
+
++#ifdef USE_ENCHANT
++    /* acquire enchant broker */
++    broker = enchant_broker_init();
++    if (!broker)
++        return WEECHAT_RC_ERROR;
++#endif
++
+     if (!weechat_aspell_config_init ())
+         return WEECHAT_RC_ERROR;
+
+@@ -1353,5 +1460,10 @@
+
+     weechat_aspell_config_free ();
+
++#ifdef USE_ENCHANT
++    /* release enchant broker */
++    enchant_broker_free (broker);
++#endif
++
+     return WEECHAT_RC_OK;
+ }
+diff -Naur a/src/plugins/aspell/weechat-aspell.h b/src/plugins/aspell/weechat-aspell.h
+--- a/src/plugins/aspell/weechat-aspell.h
++++ b/src/plugins/aspell/weechat-aspell.h
+@@ -21,7 +21,11 @@
+ #ifndef __WEECHAT_ASPELL_H
+ #define __WEECHAT_ASPELL_H 1
+
+-#include <aspell.h>
++#ifdef USE_ENCHANT
++#      include <enchant.h>
++#else
++#      include <aspell.h>
++#endif
+
+ #define weechat_plugin weechat_aspell_plugin
+ #define ASPELL_PLUGIN_NAME "aspell"
+diff -Naur a/src/plugins/aspell/weechat-aspell-speller.c b/src/plugins/aspell/weechat-aspell-speller.c
+--- a/src/plugins/aspell/weechat-aspell-speller.c
++++ b/src/plugins/aspell/weechat-aspell-speller.c
+@@ -31,6 +31,9 @@
+ struct t_aspell_speller *weechat_aspell_spellers = NULL;
+ struct t_aspell_speller *last_weechat_aspell_speller = NULL;
+
++#ifdef USE_ENCHANT
++extern EnchantBroker *broker;
++#endif
+
+ /*
+  * Checks if an aspell dictionary exists for a lang.
+@@ -43,6 +46,9 @@
+ int
+ weechat_aspell_speller_exists (const char *lang)
+ {
++#ifdef USE_ENCHANT
++    return enchant_broker_dict_exists(broker, lang);
++#else
+     struct AspellConfig *config;
+     AspellDictInfoList *list;
+     AspellDictInfoEnumeration *elements;
+@@ -68,6 +74,7 @@
+     delete_aspell_config (config);
+
+     return rc;
++#endif
+ }
+
+ /*
+@@ -135,9 +142,13 @@
+ weechat_aspell_speller_new (const char *lang)
+ {
+     struct t_aspell_speller *new_speller;
++#ifdef USE_ENCHANT
++    EnchantDict *ret;
++#else
+     AspellConfig *config;
+     AspellCanHaveError *ret;
+     struct t_infolist *infolist;
++#endif
+
+     if (!lang)
+         return NULL;
+@@ -149,6 +160,17 @@
+                         ASPELL_PLUGIN_NAME, lang);
+     }
+
++#ifdef USE_ENCHANT
++    ret = enchant_broker_request_dict (broker, lang);
++    if (!ret)
++    {
++        weechat_printf (NULL,
++                        "%s%s: error: %s",
++                        weechat_prefix ("error"), ASPELL_PLUGIN_NAME,
++                        lang);
++        return NULL;
++    }
++#else
+     /* create a speller instance for the newly created cell */
+     config = new_aspell_config();
+     aspell_config_replace (config, "lang", lang);
+@@ -178,6 +200,7 @@
+         delete_aspell_can_have_error (ret);
+         return NULL;
+     }
++#endif
+
+     /* create and add a new speller cell */
+     new_speller = malloc (sizeof (*new_speller));
+@@ -189,7 +212,11 @@
+         return NULL;
+     }
+
++#ifdef USE_ENCHANT
++    new_speller->speller = ret;
++#else
+     new_speller->speller = to_aspell_speller (ret);
++#endif
+     new_speller->lang = strdup (lang);
+
+     /* add speller to list */
+@@ -201,8 +228,10 @@
+         weechat_aspell_spellers = new_speller;
+     last_weechat_aspell_speller = new_speller;
+
++#ifndef USE_ENCHANT
+     /* free configuration */
+     delete_aspell_config (config);
++#endif
+
+     return new_speller;
+ }
+@@ -227,8 +256,12 @@
+     /* free data */
+     if (speller->speller)
+     {
++#ifdef USE_ENCHANT
++        enchant_broker_free_dict(broker, speller->speller);
++#else
+         aspell_speller_save_all_word_lists (speller->speller);
+         delete_aspell_speller (speller->speller);
++#endif
+     }
+     if (speller->lang)
+         free (speller->lang);
+diff -Naur a/src/plugins/aspell/weechat-aspell-speller.h b/src/plugins/aspell/weechat-aspell-speller.h
+--- a/src/plugins/aspell/weechat-aspell-speller.h
++++ b/src/plugins/aspell/weechat-aspell-speller.h
+@@ -23,7 +23,11 @@
+
+ struct t_aspell_speller
+ {
++#ifdef USE_ENCHANT
++    EnchantDict *speller;                  /* enchant speller               */
++#else
+     AspellSpeller *speller;                /* aspell speller                */
++#endif
+     char *lang;                            /* language                      */
+
+     struct t_aspell_speller *prev_speller; /* pointer to next speller       */
+diff -Naur a/src/plugins/CMakeLists.txt b/src/plugins/CMakeLists.txt
+--- a/src/plugins/CMakeLists.txt
++++ b/src/plugins/CMakeLists.txt
+@@ -43,13 +43,19 @@
+   ADD_SUBDIRECTORY( alias )
+ ENDIF(ENABLE_ALIAS)
+
+-IF(ENABLE_ASPELL)
+-  # Check for aspell libraries
+-  FIND_PACKAGE(Aspell)
+-  IF(ASPELL_FOUND)
++IF(NOT DISABLE_ASPELL)
++  # Check for enchant libraries
++  FIND_PACKAGE(ENCHANT)
++  IF(ENCHANT_FOUND)
+     ADD_SUBDIRECTORY( aspell )
+-  ENDIF(ASPELL_FOUND)
+-ENDIF(ENABLE_ASPELL)
++  ELSE(ENCHANT_FOUND)
++    # Check for aspell libraries
++    FIND_PACKAGE(Aspell)
++    IF(ASPELL_FOUND)
++      ADD_SUBDIRECTORY( aspell )
++    ENDIF(ASPELL_FOUND)
++  ENDIF(ENCHANT_FOUND)
++ENDIF(NOT DISABLE_ASPELL)
+
+ IF(ENABLE_CHARSET)
+   # Check for iconv support.

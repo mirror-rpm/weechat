@@ -1,9 +1,10 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.0
-Release:   1%{?dist}
+Release:   2%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-0.4.0-pie.patch
+Patch1:    weechat-0.4.0-enchant.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -33,6 +34,7 @@ This package contains include files and pc file for weechat.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 mkdir build
@@ -74,6 +76,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Jan 22 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-2
+- reimplement enchant support as a separate patch
+- implement additional enchant support for displaying spelling suggestions
+  in weechat_aspell_get_suggestions(), which is a new function introduced by
+  upstream in 0.4.0
+
 * Mon Jan 21 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-1
 - update to upstream release 0.4.0
 - add CMAKE options (DPREFIX and DLIBDIR) which negate the need to patch
