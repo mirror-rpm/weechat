@@ -1,7 +1,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.0
-Release:   2%{?dist}
+Release:   3%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-0.4.0-pie.patch
 Patch1:    weechat-0.4.0-enchant.patch
@@ -76,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Tue Jan 22 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-2
 - reimplement enchant support as a separate patch
 - implement additional enchant support for displaying spelling suggestions
