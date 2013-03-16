@@ -5,6 +5,7 @@ Release:   4%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-0.4.0-pie.patch
 Patch1:    weechat-0.4.0-enchant.patch
+Patch2:    weechat-0.4.0-ruby-version.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -35,6 +36,9 @@ This package contains include files and pc file for weechat.
 %setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
+%if 0%{?fedora} >= 19
+%patch2 -p1
+%endif
 
 %build
 mkdir build
@@ -78,6 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Wed Mar 13 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-4
 - rebuild with Ruby 2.0.0
+- add patch to properly obtain the version of ruby
+- fix bogus dates in older changelog entries
 
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
@@ -222,7 +228,7 @@ rm -rf $RPM_BUILD_ROOT
 - Released version 0.1.3
 * Sat May 21 2005 FlashCode <flashcode@flashtux.org> 0.1.2-1
 - Released version 0.1.2
-* Sat Mar 20 2005 FlashCode <flashcode@flashtux.org> 0.1.1-1
+* Sun Mar 20 2005 FlashCode <flashcode@flashtux.org> 0.1.1-1
 - Released version 0.1.1
 * Sat Feb 12 2005 FlashCode <flashcode@flashtux.org> 0.1.0-1
 - Released version 0.1.0
@@ -230,11 +236,11 @@ rm -rf $RPM_BUILD_ROOT
 - Released version 0.0.9
 * Sat Oct 30 2004 FlashCode <flashcode@flashtux.org> 0.0.8-1
 - Released version 0.0.8
-* Sat Aug 08 2004 FlashCode <flashcode@flashtux.org> 0.0.7-1
+* Sun Aug 08 2004 FlashCode <flashcode@flashtux.org> 0.0.7-1
 - Released version 0.0.7
 * Sat Jun 05 2004 FlashCode <flashcode@flashtux.org> 0.0.6-1
 - Released version 0.0.6
-* Thu Feb 02 2004 FlashCode <flashcode@flashtux.org> 0.0.5-1
+* Mon Feb 02 2004 FlashCode <flashcode@flashtux.org> 0.0.5-1
 - Released version 0.0.5
 * Thu Jan 01 2004 FlashCode <flashcode@flashtux.org> 0.0.4-1
 - Released version 0.0.4
