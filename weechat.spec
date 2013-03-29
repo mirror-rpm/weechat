@@ -1,11 +1,12 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.0
-Release:   4%{?dist}
+Release:   5%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-0.4.0-pie.patch
 Patch1:    weechat-0.4.0-enchant.patch
 Patch2:    weechat-0.4.0-ruby-version.patch
+Patch3:    weechat-0.4.0-ruby-2.0-crash.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -38,6 +39,7 @@ This package contains include files and pc file for weechat.
 %patch1 -p1
 %if 0%{?fedora} >= 19
 %patch2 -p1
+%patch3 -p1
 %endif
 
 %build
@@ -80,6 +82,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Mar 29 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-5
+- fix crash with Ruby 2.0
+
 * Wed Mar 13 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-4
 - rebuild with Ruby 2.0.0
 - add patch to properly obtain the version of ruby
