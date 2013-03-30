@@ -1,12 +1,13 @@
+%global _hardened_build 1
+
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.0
-Release:   5%{?dist}
+Release:   6%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
-Patch0:    weechat-0.4.0-pie.patch
-Patch1:    weechat-0.4.0-enchant.patch
-Patch2:    weechat-0.4.0-ruby-version.patch
-Patch3:    weechat-0.4.0-ruby-2.0-crash.patch
+Patch0:    weechat-0.4.0-enchant.patch
+Patch1:    weechat-0.4.0-ruby-version.patch
+Patch2:    weechat-0.4.0-ruby-2.0-crash.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -36,10 +37,9 @@ This package contains include files and pc file for weechat.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-%patch1 -p1
 %if 0%{?fedora} >= 19
+%patch1 -p1
 %patch2 -p1
-%patch3 -p1
 %endif
 
 %build
@@ -82,6 +82,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Sat Mar 30 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-6
+- enable _hardened_build as weechat matches the "long running" criteria
+- remove redundant PIE patch
+
 * Fri Mar 29 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-5
 - fix crash with Ruby 2.0
 
