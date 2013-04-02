@@ -1,9 +1,10 @@
 %global _hardened_build 1
+%global __provides_exclude_from ^%{_libdir}/weechat/plugins/.*$
 
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.0
-Release:   6%{?dist}
+Release:   7%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 Patch0:    weechat-0.4.0-enchant.patch
 Patch1:    weechat-0.4.0-ruby-version.patch
@@ -82,6 +83,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Apr 02 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-7
+- filter out automatically generated Provides that shouldn't be there (#947399)
+
 * Sat Mar 30 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-6
 - enable _hardened_build as weechat matches the "long running" criteria
 - remove redundant PIE patch
