@@ -3,12 +3,13 @@
 
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.4.0
-Release:   7%{?dist}
+Version:   0.4.1
+Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
-Patch0:    weechat-0.4.0-enchant.patch
+# Use Enchant when available.
+Patch0:    weechat-0.4.1-enchant.patch
+# Correctly determine the version of Ruby.
 Patch1:    weechat-0.4.0-ruby-version.patch
-Patch2:    weechat-0.4.0-ruby-2.0-crash.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -40,7 +41,6 @@ This package contains include files and pc file for weechat.
 %patch0 -p1
 %if 0%{?fedora} >= 19
 %patch1 -p1
-%patch2 -p1
 %endif
 
 %build
@@ -76,6 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
 %{_libdir}/%{name}/plugins/*
+%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 
 %files devel
 %dir %{_includedir}/%{name}
@@ -83,6 +84,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue May 28 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.1-1
+- update to upstream release 0.4.1
+- clean old changelog entries
+- fix enchant patch set
+- Ruby 2.0 crash now fixed upstream
+
 * Tue Apr 02 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.0-7
 - filter out automatically generated Provides that shouldn't be there (#947399)
 
@@ -165,101 +172,3 @@ rm -rf $RPM_BUILD_ROOT
 
 * Thu May  6 2010 Paul P. Komkoff Jr <i@stingr.net> - 0.3.2-1
 - new upstream version
-
-* Mon Dec  7 2009 Stepan Kasal <skasal@redhat.com> - 0.3.0-3
-- rebuild against perl 5.10.1
-
-* Sat Nov 28 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.3.0-2
-- use enchant as spelling provider (instead of aspell), patch by Caolan McNamara
-
-* Thu Sep 10 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.3.0-1
-- new, shiny version
-- new cmake-based build
-
-* Mon Jul 27 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.6.3-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
-
-* Thu Jun 25 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6.3-1
-- gnutls detection bugfix
-
-* Fri May  1 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6.2-1
-- fix some charset decoding problems.
-
-* Thu Mar 19 2009 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6.1-1
-- fix bz#490709
-
-* Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.6-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
-
-* Sun Nov 30 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.2.6-6
-- Rebuild for Python 2.6
-
-* Sun Sep 21 2008 Ville Skyttä <ville.skytta at iki.fi> - 0.2.6-5
-- Fix Patch0:/%%patch mismatch.
-
-* Fri Jun 27 2008 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6-4
-- rebuild because of ssl/tls deps
-
-* Sun Feb 24 2008 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6-3
-- make weechat-curses a PIE
-- remove irrelevant INSTALL from docs
-- remove *.la from plugins
-
-* Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 0.2.6-2
-- Autorebuild for GCC 4.3
-
-* Fri Oct 19 2007 Paul P. Komkoff Jr <i@stingr.net> - 0.2.6-1
-- new upstream version, new license
-* Fri Jun  8 2007 Paul P. Komkoff Jr <i@stingr.net> - 0.2.5-1
-- new upstream version
-* Mon Apr  9 2007 Paul P. Komkoff Jr <i@stingr.net> - 0.2.4-2
-- preparing for Fedora
-
-* Thu Mar 29 2007 FlashCode <flashcode@flashtux.org> 0.2.4-1
-- Released version 0.2.4
-* Wed Jan 10 2007 FlashCode <flashcode@flashtux.org> 0.2.3-1
-- Released version 0.2.3
-* Sat Jan 06 2007 FlashCode <flashcode@flashtux.org> 0.2.2-1
-- Released version 0.2.2
-* Sun Oct 01 2006 FlashCode <flashcode@flashtux.org> 0.2.1-1
-- Released version 0.2.1
-* Sat Aug 19 2006 FlashCode <flashcode@flashtux.org> 0.2.0-1
-- Released version 0.2.0
-* Thu May 25 2006 FlashCode <flashcode@flashtux.org> 0.1.9-1
-- Released version 0.1.9
-* Sat Mar 18 2006 FlashCode <flashcode@flashtux.org> 0.1.8-1
-- Released version 0.1.8
-* Sat Jan 14 2006 FlashCode <flashcode@flashtux.org> 0.1.7-1
-- Released version 0.1.7
-* Fri Nov 11 2005 FlashCode <flashcode@flashtux.org> 0.1.6-1
-- Released version 0.1.6
-* Sat Sep 24 2005 FlashCode <flashcode@flashtux.org> 0.1.5-1
-- Released version 0.1.5
-* Sat Jul 30 2005 FlashCode <flashcode@flashtux.org> 0.1.4-1
-- Released version 0.1.4
-* Sat Jul 02 2005 FlashCode <flashcode@flashtux.org> 0.1.3-1
-- Released version 0.1.3
-* Sat May 21 2005 FlashCode <flashcode@flashtux.org> 0.1.2-1
-- Released version 0.1.2
-* Sun Mar 20 2005 FlashCode <flashcode@flashtux.org> 0.1.1-1
-- Released version 0.1.1
-* Sat Feb 12 2005 FlashCode <flashcode@flashtux.org> 0.1.0-1
-- Released version 0.1.0
-* Sat Jan 01 2005 FlashCode <flashcode@flashtux.org> 0.0.9-1
-- Released version 0.0.9
-* Sat Oct 30 2004 FlashCode <flashcode@flashtux.org> 0.0.8-1
-- Released version 0.0.8
-* Sun Aug 08 2004 FlashCode <flashcode@flashtux.org> 0.0.7-1
-- Released version 0.0.7
-* Sat Jun 05 2004 FlashCode <flashcode@flashtux.org> 0.0.6-1
-- Released version 0.0.6
-* Mon Feb 02 2004 FlashCode <flashcode@flashtux.org> 0.0.5-1
-- Released version 0.0.5
-* Thu Jan 01 2004 FlashCode <flashcode@flashtux.org> 0.0.4-1
-- Released version 0.0.4
-* Mon Nov 03 2003 FlashCode <flashcode@flashtux.org> 0.0.3-1
-- Released version 0.0.3
-* Sun Oct 05 2003 FlashCode <flashcode@flashtux.org> 0.0.2-1
-- Released version 0.0.2
-* Sat Sep 27 2003 FlashCode <flashcode@flashtux.org> 0.0.1-1
-- Released version 0.0.1
