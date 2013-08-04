@@ -4,7 +4,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.1
-Release:   2%{?dist}
+Release:   3%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # Use Enchant when available.
 Patch0:    weechat-0.4.1-enchant.patch
@@ -13,11 +13,24 @@ Patch1:    weechat-0.4.0-ruby-version.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
-BuildRequires: ncurses-devel python-devel perl-devel ruby-devel
-BuildRequires: gnutls-devel lua-devel enchant-devel
-BuildRequires: docbook-style-xsl gettext ruby
-BuildRequires: cmake perl-ExtUtils-Embed tcl-devel
-BuildRequires: libcurl-devel zlib-devel pkgconfig
+
+BuildRequires: cmake
+BuildRequires: docbook-style-xsl
+BuildRequires: enchant-devel
+BuildRequires: gettext
+BuildRequires: gnutls-devel
+BuildRequires: libcurl-devel
+BuildRequires: libgcrypt-devel
+BuildRequires: lua-devel
+BuildRequires: ncurses-devel
+BuildRequires: perl-ExtUtils-Embed
+BuildRequires: perl-devel
+BuildRequires: pkgconfig
+BuildRequires: python-devel
+BuildRequires: ruby
+BuildRequires: ruby-devel
+BuildRequires: tcl-devel
+BuildRequires: zlib-devel
 
 %description
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
@@ -27,7 +40,8 @@ It is customizable and extensible with scripts.
 %package devel
 Summary: Development files for weechat
 Group: Development/Libraries
-Requires: %{name} = %{version}-%{release} pkgconfig
+Requires: %{name} = %{version}-%{release}
+Requires: pkgconfig
 
 %description devel
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
@@ -36,12 +50,14 @@ It is customizable and extensible with scripts.
 
 This package contains include files and pc file for weechat.
 
+
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
 %if 0%{?fedora} >= 19
 %patch1 -p1
 %endif
+
 
 %build
 mkdir build
@@ -52,6 +68,7 @@ pushd build
   ..
 make VERBOSE=1 %{?_smp_mflags}
 
+
 %install
 rm -rf $RPM_BUILD_ROOT
 pushd build
@@ -60,11 +77,10 @@ popd
 
 %find_lang %name
 
-%check
-ctest
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
 
 %files -f %{name}.lang
 %defattr(-,root,root,0755)
@@ -84,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Sun Aug 04 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.1-3
+- add BR: libgcrypt-devel
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
