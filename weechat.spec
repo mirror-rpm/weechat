@@ -65,7 +65,7 @@ pushd build
 %cmake \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
-  -DENABLE_DOC=ON \
+  -ENABLE_MAN=ON \
   ..
 make VERBOSE=1 %{?_smp_mflags}
 
