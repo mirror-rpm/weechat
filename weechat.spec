@@ -4,7 +4,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.2
-Release:   1%{?dist}
+Release:   2%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # Use Enchant when available.
 # Patch0:    weechat-0.4.1-enchant.patch
@@ -100,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Nov 08 2013 Russell Golden <niveusluna@niveusluna.org> - 0.4.2-2
+- Forgot to remove 0.4.1 from the sources file. (Rawhide only.)
+
 * Fri Nov 08 2013 Russell Golden <niveusluna@niveusluna.org> - 0.4.2-1
 - rename binary from "weechat-curses" to "weechat" (with symbolic link "weechat-curses" for compatibility)
 - add secured data (encryption of passwords or private data), new command /secure, new file sec.conf
