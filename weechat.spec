@@ -53,10 +53,10 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
+#patch0 -p1
+%if 0%{?fedora} >= 19
 %patch0 -p1
-#if 0#{?fedora} >= 19
-#patch1 -p1
-#endif
+%endif
 
 
 %build
