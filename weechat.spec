@@ -9,7 +9,7 @@ Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # Use Enchant when available.
 # Patch0:    weechat-0.4.1-enchant.patch
 # Correctly determine the version of Ruby.
-Patch1:    weechat-0.4.0-ruby-version.patch
+Patch0:    weechat-0.4.0-ruby-version.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
