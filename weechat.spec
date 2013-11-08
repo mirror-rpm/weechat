@@ -65,7 +65,6 @@ pushd build
 %cmake \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
-  -ENABLE_MAN=ON \
   ..
 make VERBOSE=1 %{?_smp_mflags}
 
@@ -88,7 +87,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog COPYING NEWS README
 %doc doc/en/weechat_faq.en.txt doc/en/weechat_quickstart.en.txt doc/en/weechat_scripting.en.txt
 %doc doc/en/weechat_user.en.txt
-%{_mandir}/man1/%{name}
 %{_bindir}/%{name}-curses
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
@@ -117,6 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 - add info about things defined by a script in the detailed view of script (/script show)
 - support of "enchant" library in aspell plugin
 - many bugs fixed.
+- no more man page by default
 
 * Sun Aug 04 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.1-3
 - add BR: libgcrypt-devel
