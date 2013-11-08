@@ -54,9 +54,9 @@ This package contains include files and pc file for weechat.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-%if 0%{?fedora} >= 19
-%patch1 -p1
-%endif
+#if 0#{?fedora} >= 19
+#patch1 -p1
+#endif
 
 
 %build
@@ -100,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Nov 08 2013 Russell Golden <niveusluna@niveusluna.org> - 0.4.2-3
+- Forgot to remove the patch1 instruction
+
 * Fri Nov 08 2013 Russell Golden <niveusluna@niveusluna.org> - 0.4.2-2
 - Forgot to remove 0.4.1 from the sources file. (Rawhide only.)
 
