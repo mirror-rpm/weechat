@@ -87,7 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog COPYING NEWS README
 %doc doc/en/weechat_faq.en.txt doc/en/weechat_quickstart.en.txt doc/en/weechat_scripting.en.txt
 %doc doc/en/weechat_user.en.txt
-%{_mandir}/man1/%{name}
+%{_mandir}/man1/%{name}.1.gz
 %{_bindir}/%{name}-curses
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
