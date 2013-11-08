@@ -65,6 +65,7 @@ pushd build
 %cmake \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
+  -DENABLE_DOC=on \
   ..
 make VERBOSE=1 %{?_smp_mflags}
 
@@ -87,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog COPYING NEWS README
 %doc doc/en/weechat_faq.en.txt doc/en/weechat_quickstart.en.txt doc/en/weechat_scripting.en.txt
 %doc doc/en/weechat_user.en.txt
-%{_mandir}/man1/%{name}.1.gz
+%{_mandir}/man1/%{name}
 %{_bindir}/%{name}-curses
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
