@@ -7,7 +7,7 @@ Version:   0.4.2
 Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # Use Enchant when available.
-Patch0:    weechat-0.4.1-enchant.patch
+# Patch0:    weechat-0.4.1-enchant.patch
 # Correctly determine the version of Ruby.
 Patch1:    weechat-0.4.0-ruby-version.patch
 URL:       http://weechat.org
