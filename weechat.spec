@@ -3,8 +3,8 @@
 
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.4.1
-Release:   3%{?dist}
+Version:   0.4.2
+Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # Use Enchant when available.
 Patch0:    weechat-0.4.1-enchant.patch
@@ -100,6 +100,23 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Nov 08 2013 Russell Golden <niveusluna@niveusluna.org> - 0.4.2-1
+- rename binary from "weechat-curses" to "weechat" (with symbolic link "weechat-curses" for compatibility)
+- add secured data (encryption of passwords or private data), new command /secure, new file sec.conf
+- search of regular expression in buffer with text emphasis, in prefixes, messages or both
+- add option "scroll_beyond_end" for command /window
+- add optional buffer context in bar items (for example to display bitlbee nicklist in a root bar)
+- new options weechat.look.hotlist_{prefix|suffix}
+- new option weechat.look.key_bind_safe to prevent any key binding error from user
+- new option weechat.network.proxy_curl to use a proxy when downloading URLs with curl
+- display day change message dynamically
+- support of wildcards in IRC commands (de)op/halfop/voice
+- new option irc.look.notice_welcome_redirect to redirect channel welcome notices to the channel buffer
+- new option irc.look.nick_color_hash: new hash algorithm to find nick colors (variant of djb2)
+- add info about things defined by a script in the detailed view of script (/script show)
+- support of "enchant" library in aspell plugin
+- many bugs fixed.
+
 * Sun Aug 04 2013 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.1-3
 - add BR: libgcrypt-devel
 
