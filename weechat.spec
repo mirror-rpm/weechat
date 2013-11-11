@@ -4,7 +4,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.2
-Release:   3%{?dist}
+Release:   4%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # Use Enchant when available.
 # Patch0:    weechat-0.4.1-enchant.patch
@@ -65,6 +65,7 @@ pushd build
 %cmake \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
+  -DENABLE_ENCHANT=ON \
   ..
 make VERBOSE=1 %{?_smp_mflags}
 
@@ -100,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Nov 11 2013 Paul Komkoff <i@stingr.net> - 0.4.2-4
+- enable enchant detection / aspell build.
+
 * Fri Nov 08 2013 Russell Golden <niveusluna@niveusluna.org> - 0.4.2-3
 - Forgot to remove the patch1 instruction
 
