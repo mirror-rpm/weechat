@@ -3,13 +3,9 @@
 
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.4.2
-Release:   4%{?dist}
+Version:   0.4.3
+Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
-# Use Enchant when available.
-# Patch0:    weechat-0.4.1-enchant.patch
-# Correctly determine the version of Ruby.
-Patch0:    weechat-0.4.0-ruby-version.patch
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
@@ -53,10 +49,6 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
-#patch0 -p1
-%if 0%{?fedora} >= 19
-%patch0 -p1
-%endif
 
 
 %build
@@ -101,6 +93,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Sun Feb 16 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.3-1
+- update to upstream release 0.4.3
+
 * Mon Nov 11 2013 Paul Komkoff <i@stingr.net> - 0.4.2-4
 - enable enchant detection / aspell build.
 
