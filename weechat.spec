@@ -4,11 +4,15 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.3
-Release:   1%{?dist}
+Release:   2%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
+
+%if 0%{?rhel}
+Patch0:    enchant-0.4.3.patch
+%endif
 
 BuildRequires: cmake
 BuildRequires: docbook-style-xsl
@@ -49,7 +53,9 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
-
+%if 0%{?rhel}
+%patch0 -p 1
+%endif
 
 %build
 mkdir build
@@ -93,6 +99,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Wed Apr 09 2014 Russell Golden <niveusluna@niveusluna.org> - 0.4.3-2
+- Build and patch for el6
+  - This is a _nasty_ hack intended solely to get the binary working.
+  - The binary does seem to work whether or not aspell is enabled.
+
 * Sun Feb 16 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 0.4.3-1
 - update to upstream release 0.4.3
 
