@@ -4,7 +4,7 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   0.4.3
-Release:   3%{?dist}
+Release:   4%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 URL:       http://weechat.org
 Group:     Applications/Communications
@@ -99,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Wed May 21 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 0.4.3-4
+- Rebuilt for https://fedoraproject.org/wiki/Changes/f21tcl86
+
 * Tue Apr 29 2014 Vít Ondruch <vondruch@redhat.com> - 0.4.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.1
 
