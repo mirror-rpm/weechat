@@ -3,22 +3,21 @@
 
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
-Version:   0.4.3
-Release:   6%{?dist}
+Version:   1.0
+Release:   1%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
 
-%if 0%{?rhel}
-Patch0:    enchant-0.4.3.patch
-%endif
-
+BuildRequires: asciidoc
+BuildRequires: ca-certificates
 BuildRequires: cmake
 BuildRequires: docbook-style-xsl
 BuildRequires: enchant-devel
 BuildRequires: gettext
 BuildRequires: gnutls-devel
+BuildRequires: guile-devel
 BuildRequires: libcurl-devel
 BuildRequires: libgcrypt-devel
 BuildRequires: lua-devel
@@ -29,6 +28,7 @@ BuildRequires: pkgconfig
 BuildRequires: python-devel
 BuildRequires: ruby
 BuildRequires: ruby-devel
+BuildRequires: source-highlight
 BuildRequires: tcl-devel
 BuildRequires: zlib-devel
 
@@ -40,7 +40,7 @@ It is customizable and extensible with scripts.
 %package devel
 Summary: Development files for weechat
 Group: Development/Libraries
-Requires: %{name} = %{version}-%{release}
+Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: pkgconfig
 
 %description devel
@@ -53,9 +53,7 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
-%if 0%{?rhel}
-%patch0 -p 1
-%endif
+
 
 %build
 mkdir build
@@ -64,8 +62,14 @@ pushd build
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
   -DENABLE_ENCHANT=ON \
+  -DENABLE_DOC=ON \
+  -DENABLE_MAN=ON \
+%if %{?fedora} >= 21
+  -DCMAKE_C_FLAGS:STRING="%{optflags} -O0" \
+%endif
   ..
 make VERBOSE=1 %{?_smp_mflags}
+popd
 
 
 %install
@@ -77,15 +81,10 @@ popd
 %find_lang %name
 
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-
 %files -f %{name}.lang
-%defattr(-,root,root,0755)
-%doc AUTHORS ChangeLog COPYING NEWS README
-%doc doc/en/weechat_faq.en.txt doc/en/weechat_quickstart.en.txt doc/en/weechat_scripting.en.txt
-%doc doc/en/weechat_user.en.txt
+%doc AUTHORS.asciidoc ChangeLog.asciidoc Contributing.asciidoc
+%doc COPYING README.asciidoc ReleaseNotes.asciidoc
+%doc doc/
 %{_bindir}/%{name}-curses
 %{_bindir}/%{name}
 %dir %{_libdir}/%{name}
@@ -93,12 +92,27 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/plugins/*
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 
+%{_mandir}/man1/weechat.1*
+%{_mandir}/de/man1/weechat.1*
+%{_mandir}/fr/man1/weechat.1*
+%{_mandir}/it/man1/weechat.1*
+%{_mandir}/ja/man1/weechat.1*
+%{_mandir}/pl/man1/weechat.1*
+
 %files devel
 %dir %{_includedir}/%{name}
 %{_includedir}/%{name}/weechat-plugin.h
 %{_libdir}/pkgconfig/*.pc
 
+
 %changelog
+* Sat Sep 13 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0-1
+- update to upstream release 1.0
+- add %%{?_isa} to Requires
+- add additional BR: asciidoc ca-certificates guile-devel source-highlight
+- add man page and docs
+- temporarily add cflags when building on rawhide (fedora 21) due to FTBFS
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.3-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
