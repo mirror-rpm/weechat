@@ -1,10 +1,17 @@
 %global _hardened_build 1
 %global __provides_exclude_from ^%{_libdir}/weechat/plugins/.*$
 
+%if %{?_pkgdocdir:1}0
+%global _doc %{name}
+%else
+%global _doc %{name}-%{version}
+%global _pkgdocdir %{_docdir}/%{_doc}
+%endif
+
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   1.0
-Release:   1%{?dist}
+Release:   2%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 URL:       http://weechat.org
 Group:     Applications/Communications
@@ -53,6 +60,8 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
+find doc/ -type f -name 'CMakeLists.txt' \
+    -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
 
 %build
@@ -84,13 +93,13 @@ popd
 %files -f %{name}.lang
 %doc AUTHORS.asciidoc ChangeLog.asciidoc Contributing.asciidoc
 %doc COPYING README.asciidoc ReleaseNotes.asciidoc
-%doc doc/
 %{_bindir}/%{name}-curses
 %{_bindir}/%{name}
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
 %{_libdir}/%{name}/plugins/*
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+%{_pkgdocdir}
 
 %{_mandir}/man1/weechat.1*
 %{_mandir}/de/man1/weechat.1*
@@ -106,6 +115,9 @@ popd
 
 
 %changelog
+* Sat Sep 20 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0-2
+- add conditionals for versioned/unversioned documentation directory
+
 * Sat Sep 13 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0-1
 - update to upstream release 1.0
 - add %%{?_isa} to Requires
