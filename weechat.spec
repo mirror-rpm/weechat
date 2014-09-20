@@ -11,11 +11,13 @@
 Name:      weechat
 Summary:   Portable, fast, light and extensible IRC client
 Version:   1.0
-Release:   2%{?dist}
+Release:   3%{?dist}
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
+
+Patch0:    %{name}-1.0-Fix-compilation-of-plugin-API.patch
 
 BuildRequires: asciidoc
 BuildRequires: ca-certificates
@@ -60,6 +62,7 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0 -p1
 find doc/ -type f -name 'CMakeLists.txt' \
     -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
@@ -67,17 +70,12 @@ find doc/ -type f -name 'CMakeLists.txt' \
 %build
 mkdir build
 pushd build
-# Ugly CFLAGS hack used to fix FTBFS with gcc 4.9.1.
-# https://github.com/weechat/weechat/issues/200
 %cmake \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
   -DENABLE_ENCHANT=ON \
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
-%if 0%{?fedora} >= 21
-  -DCMAKE_C_FLAGS:STRING="%{optflags} -O0" \
-%endif
   ..
 make VERBOSE=1 %{?_smp_mflags}
 popd
@@ -117,6 +115,9 @@ popd
 
 
 %changelog
+* Sat Sep 20 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0-3
+- patch from upstream to fix FTBFS (#1144761)
+
 * Sat Sep 20 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0-2
 - add conditionals for versioned/unversioned documentation directory
 
