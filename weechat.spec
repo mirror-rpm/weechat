@@ -67,6 +67,8 @@ find doc/ -type f -name 'CMakeLists.txt' \
 %build
 mkdir build
 pushd build
+# Ugly CFLAGS hack used to fix FTBFS with gcc 4.9.1.
+# https://github.com/weechat/weechat/issues/200
 %cmake \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
