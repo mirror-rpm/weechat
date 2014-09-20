@@ -64,7 +64,7 @@ pushd build
   -DENABLE_ENCHANT=ON \
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
-%if %{?fedora} >= 21
+%if 0%{?fedora} >= 21
   -DCMAKE_C_FLAGS:STRING="%{optflags} -O0" \
 %endif
   ..
