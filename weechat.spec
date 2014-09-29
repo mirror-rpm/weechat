@@ -9,15 +9,15 @@
 %endif
 
 Name:      weechat
+Version:   1.0.1
+Release:   1%{?dist}
+
 Summary:   Portable, fast, light and extensible IRC client
-Version:   1.0
-Release:   3%{?dist}
-Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
 
-Patch0:    %{name}-1.0-Fix-compilation-of-plugin-API.patch
+Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 
 BuildRequires: asciidoc
 BuildRequires: ca-certificates
@@ -62,7 +62,6 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1
 find doc/ -type f -name 'CMakeLists.txt' \
     -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
@@ -115,6 +114,9 @@ popd
 
 
 %changelog
+* Sun Sep 28 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0.1-1
+- update to upstream release 1.0.1
+
 * Sat Sep 20 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0-3
 - patch from upstream to fix FTBFS (#1144761)
 
