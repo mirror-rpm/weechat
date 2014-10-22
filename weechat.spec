@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.0.1
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -75,6 +75,7 @@ pushd build
   -DENABLE_ENCHANT=ON \
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
+  -DCA_FILE=/etc/pki/tls/certs/ca-bundle.crt \
   ..
 make VERBOSE=1 %{?_smp_mflags}
 popd
@@ -114,6 +115,9 @@ popd
 
 
 %changelog
+* Wed Oct 22 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0.1-2
+- fix default ca-bundle.crt location (#1151748)
+ 
 * Sun Sep 28 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0.1-1
 - update to upstream release 1.0.1
 
