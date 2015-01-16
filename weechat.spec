@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.0.1
-Release:   2%{?dist}
+Release:   3%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -18,6 +18,10 @@ Group:     Applications/Communications
 License:   GPLv3
 
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
+# /usr/bin/ld: CMakeFiles/charset.dir/charset.o: 
+# relocation R_X86_64_PC32 against symbol `weechat_charset_plugin' 
+# can not be used when making a shared object; recompile with -fPIC
+Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
 BuildRequires: asciidoc
 BuildRequires: ca-certificates
@@ -62,6 +66,7 @@ This package contains include files and pc file for weechat.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0 -p1
 find doc/ -type f -name 'CMakeLists.txt' \
     -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
@@ -115,6 +120,10 @@ popd
 
 
 %changelog
+* Sat Jan 17 2015 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.0.1-3
+- Rebuild for https://fedoraproject.org/wiki/Changes/Ruby_2.2
+- Build plugins with -fPIC
+
 * Wed Oct 22 2014 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.0.1-2
 - fix default ca-bundle.crt location (#1151748)
  
