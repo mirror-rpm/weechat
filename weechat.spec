@@ -9,8 +9,8 @@
 %endif
 
 Name:      weechat
-Version:   1.0.1
-Release:   3%{?dist}
+Version:   1.1.1
+Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -120,6 +120,9 @@ popd
 
 
 %changelog
+* Sun Mar 8 2015 Paul Komkoff <i@stingr.net> - 1.1.1-1
+- new upstream version (#1181572)
+
 * Sat Jan 17 2015 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.0.1-3
 - Rebuild for https://fedoraproject.org/wiki/Changes/Ruby_2.2
 - Build plugins with -fPIC
