@@ -9,7 +9,7 @@
 %endif
 
 Name:      weechat
-Version:   1.1.1
+Version:   1.2
 Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
@@ -43,6 +43,7 @@ BuildRequires: ruby
 BuildRequires: ruby-devel
 BuildRequires: source-highlight
 BuildRequires: tcl-devel
+BuildRequires: v8-devel
 BuildRequires: zlib-devel
 
 %description
@@ -104,7 +105,7 @@ popd
 %dir %{_libdir}/%{name}/plugins
 %{_libdir}/%{name}/plugins/*
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-%{_pkgdocdir}
+# %{_pkgdocdir}
 
 %{_mandir}/man1/weechat.1*
 %{_mandir}/de/man1/weechat.1*
@@ -112,6 +113,7 @@ popd
 %{_mandir}/it/man1/weechat.1*
 %{_mandir}/ja/man1/weechat.1*
 %{_mandir}/pl/man1/weechat.1*
+%{_mandir}/ru/man1/weechat.1*
 
 %files devel
 %dir %{_includedir}/%{name}
@@ -120,6 +122,9 @@ popd
 
 
 %changelog
+* Sun May 10 2015 Paul Komkoff <i@stingr.net> - 1.2-1
+- new upstream version (#1220153)
+
 * Sun Mar 8 2015 Paul Komkoff <i@stingr.net> - 1.1.1-1
 - new upstream version (#1181572)
 
