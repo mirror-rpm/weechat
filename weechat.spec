@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.2
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -43,7 +43,9 @@ BuildRequires: ruby
 BuildRequires: ruby-devel
 BuildRequires: source-highlight
 BuildRequires: tcl-devel
+%ifarch %{ix86} x86_64 %{arm}
 BuildRequires: v8-devel
+%endif
 BuildRequires: zlib-devel
 
 %description
@@ -122,6 +124,9 @@ popd
 
 
 %changelog
+* Fri May 22 2015 Dan Horák <dan[at]danny.cz> - 1.2-2
+- v8 is available only on selected arches (#1221689)
+
 * Sun May 10 2015 Paul Komkoff <i@stingr.net> - 1.2-1
 - new upstream version (#1220153)
 
