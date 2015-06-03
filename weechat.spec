@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.2
-Release:   2%{?dist}
+Release:   3%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -124,6 +124,9 @@ popd
 
 
 %changelog
+* Wed Jun 03 2015 Jitka Plesnikova <jplesnik@redhat.com> - 1.2-3
+- Perl 5.22 rebuild
+
 * Fri May 22 2015 Dan Horák <dan[at]danny.cz> - 1.2-2
 - v8 is available only on selected arches (#1221689)
 
