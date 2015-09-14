@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.3
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -124,6 +124,9 @@ popd
 
 
 %changelog
+* Mon Sep 14 2015 Paul Komkoff <i@stingr.net> - 1.3-2
+- Trying to fix broken build.
+
 * Sat Sep 05 2015 Paul Komkoff <i@stingr.net> - 1.3-1
 - new upstream version (#1254000)
 
