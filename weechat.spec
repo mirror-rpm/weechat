@@ -107,7 +107,7 @@ popd
 %dir %{_libdir}/%{name}/plugins
 %{_libdir}/%{name}/plugins/*
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-# %{_pkgdocdir}
+%{_pkgdocdir}/weechat_*.html
 
 %{_mandir}/man1/weechat.1*
 %{_mandir}/de/man1/weechat.1*
