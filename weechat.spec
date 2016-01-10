@@ -9,8 +9,8 @@
 %endif
 
 Name:      weechat
-Version:   1.3
-Release:   2%{?dist}
+Version:   1.4
+Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -18,8 +18,8 @@ Group:     Applications/Communications
 License:   GPLv3
 
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
-# /usr/bin/ld: CMakeFiles/charset.dir/charset.o: 
-# relocation R_X86_64_PC32 against symbol `weechat_charset_plugin' 
+# /usr/bin/ld: CMakeFiles/charset.dir/charset.o:
+# relocation R_X86_64_PC32 against symbol `weechat_charset_plugin'
 # can not be used when making a shared object; recompile with -fPIC
 Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
@@ -110,6 +110,7 @@ popd
 %{_pkgdocdir}/weechat_*.html
 
 %{_mandir}/man1/weechat.1*
+%{_mandir}/cs/man1/weechat.1*
 %{_mandir}/de/man1/weechat.1*
 %{_mandir}/fr/man1/weechat.1*
 %{_mandir}/it/man1/weechat.1*
@@ -124,6 +125,9 @@ popd
 
 
 %changelog
+* Sun Jan 10 2016 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.4-1
+- update to upstream release 1.4
+
 * Mon Sep 14 2015 Paul Komkoff <i@stingr.net> - 1.3-2
 - Trying to fix broken build.
 
