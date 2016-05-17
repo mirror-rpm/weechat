@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.4
-Release:   3%{?dist}
+Release:   4%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -125,6 +125,9 @@ popd
 
 
 %changelog
+* Tue May 17 2016 Jitka Plesnikova <jplesnik@redhat.com> - 1.4-4
+- Perl 5.24 rebuild
+
 * Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
