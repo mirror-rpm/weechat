@@ -46,7 +46,7 @@ BuildRequires: tcl-devel
 %ifarch %{ix86} x86_64 %{arm}
 # https://bugzilla.redhat.com/show_bug.cgi?id=1338728
 # https://github.com/weechat/weechat/issues/360
-%if 0%{?fedora} < 25
+%if 0%{?rhel} || 0%{?fedora} < 25
 BuildRequires: v8-devel
 %endif
 %endif
