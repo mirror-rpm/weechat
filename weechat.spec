@@ -44,7 +44,11 @@ BuildRequires: ruby-devel
 BuildRequires: source-highlight
 BuildRequires: tcl-devel
 %ifarch %{ix86} x86_64 %{arm}
+# https://bugzilla.redhat.com/show_bug.cgi?id=1338728
+# https://github.com/weechat/weechat/issues/360
+%if 0%{?fedora} < 25
 BuildRequires: v8-devel
+%endif
 %endif
 BuildRequires: zlib-devel
 
@@ -83,6 +87,9 @@ pushd build
   -DENABLE_ENCHANT=ON \
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
+%if 0%{?fedora} >= 25
+  -DENABLE_JAVASCRIPT=OFF \
+%endif
   -DCA_FILE=/etc/pki/tls/certs/ca-bundle.crt \
   ..
 make VERBOSE=1 %{?_smp_mflags}
@@ -127,6 +134,7 @@ popd
 %changelog
 * Sun Jun 05 2016 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.5-1
 - update to upstream release 1.5
+- temporarily disable v8 on rawhide (25)
 
 * Tue May 17 2016 Jitka Plesnikova <jplesnik@redhat.com> - 1.4-4
 - Perl 5.24 rebuild
