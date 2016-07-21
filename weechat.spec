@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.5
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -132,6 +132,9 @@ popd
 
 
 %changelog
+* Thu Jul 21 2016 Than Ngo <than@redhat.com> - 1.5-2
+- Rebuilt for glibc: Revert sendmsg/recvmsg ABI changes
+
 * Sun Jun 05 2016 Jamie Nguyen <jamielinux@fedoraproject.org> - 1.5-1
 - update to upstream release 1.5
 - temporarily disable v8 on rawhide (25)
