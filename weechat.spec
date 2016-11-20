@@ -9,8 +9,8 @@
 %endif
 
 Name:      weechat
-Version:   1.5
-Release:   2%{?dist}
+Version:   1.6
+Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -23,7 +23,7 @@ Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # can not be used when making a shared object; recompile with -fPIC
 Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
-BuildRequires: asciidoc
+BuildRequires: asciidoctor
 BuildRequires: ca-certificates
 BuildRequires: cmake
 BuildRequires: docbook-style-xsl
@@ -106,8 +106,8 @@ popd
 
 
 %files -f %{name}.lang
-%doc AUTHORS.asciidoc ChangeLog.asciidoc Contributing.asciidoc
-%doc COPYING README.asciidoc ReleaseNotes.asciidoc
+%doc AUTHORS.adoc ChangeLog.adoc Contributing.adoc
+%doc COPYING README.adoc ReleaseNotes.adoc
 %{_bindir}/%{name}-curses
 %{_bindir}/%{name}
 %dir %{_libdir}/%{name}
@@ -132,6 +132,9 @@ popd
 
 
 %changelog
+* Sun Nov 20 2016 Paul Komkoff <i@stingr.net> - 1.6-1
+- new upstream version 1.6 (#1297198)
+
 * Thu Jul 21 2016 Than Ngo <than@redhat.com> - 1.5-2
 - Rebuilt for glibc: Revert sendmsg/recvmsg ABI changes
 
