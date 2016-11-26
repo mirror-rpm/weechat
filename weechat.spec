@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.6
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -23,7 +23,7 @@ Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # can not be used when making a shared object; recompile with -fPIC
 Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
-BuildRequires: asciidoctor
+BuildRequires: asciidoctor >= 1.5.4
 BuildRequires: ca-certificates
 BuildRequires: cmake
 BuildRequires: docbook-style-xsl
@@ -132,6 +132,9 @@ popd
 
 
 %changelog
+* Sat Nov 26 2016 Paul Komkoff <i@stingr.net> - 1.6-2
+- add version constraint for asciidoctor.
+
 * Sun Nov 20 2016 Paul Komkoff <i@stingr.net> - 1.6-1
 - new upstream version 1.6 (#1297198)
 
