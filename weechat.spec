@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.6
-Release:   2%{?dist}
+Release:   3%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -132,6 +132,9 @@ popd
 
 
 %changelog
+* Fri Jan 13 2017 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.6-3
+- F-26: rebuild for ruby24
+
 * Sat Nov 26 2016 Paul Komkoff <i@stingr.net> - 1.6-2
 - add version constraint for asciidoctor.
 
