@@ -9,8 +9,8 @@
 %endif
 
 Name:      weechat
-Version:   1.6
-Release:   4%{?dist}
+Version:   1.7.1
+Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -132,6 +132,10 @@ popd
 
 
 %changelog
+* Sun Apr 30 2017 Kevin Fenzi <kevin@scrye.com> - 1.7.1-1
+- Update to 1.7.1. Fixes bug #1413366
+- Fix for CVE-2017-8073
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.6-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
