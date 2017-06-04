@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   1.7.1
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -132,6 +132,9 @@ popd
 
 
 %changelog
+* Sun Jun 04 2017 Jitka Plesnikova <jplesnik@redhat.com> - 1.7.1-2
+- Perl 5.26 rebuild
+
 * Sun Apr 30 2017 Kevin Fenzi <kevin@scrye.com> - 1.7.1-1
 - Update to 1.7.1. Fixes bug #1413366
 - Fix for CVE-2017-8073
