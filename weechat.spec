@@ -9,8 +9,8 @@
 %endif
 
 Name:      weechat
-Version:   1.7.1
-Release:   2%{?dist}
+Version:   1.9
+Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -132,6 +132,9 @@ popd
 
 
 %changelog
+* Fri Jun 30 2017 Paul Komkoff <i@stingr.net> - 1.9-1
+- new upstream version 1.9 #1450583
+
 * Sun Jun 04 2017 Jitka Plesnikova <jplesnik@redhat.com> - 1.7.1-2
 - Perl 5.26 rebuild
 
