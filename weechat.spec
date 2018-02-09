@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   2.0.1
-Release:   2%{?dist}
+Release:   3%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -38,7 +38,7 @@ BuildRequires: ncurses-devel
 BuildRequires: perl-ExtUtils-Embed
 BuildRequires: perl-devel
 BuildRequires: pkgconfig
-BuildRequires: python-devel
+BuildRequires: python2-devel
 BuildRequires: ruby
 BuildRequires: ruby-devel
 BuildRequires: source-highlight
@@ -132,6 +132,10 @@ popd
 
 
 %changelog
+* Fri Feb 09 2018 Iryna Shcherbina <ishcherb@redhat.com> - 2.0.1-3
+- Update Python 2 dependency declarations to new packaging standards
+  (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
