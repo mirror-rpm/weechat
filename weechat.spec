@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   2.0.1
-Release:   3%{?dist}
+Release:   4%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -132,6 +132,9 @@ popd
 
 
 %changelog
+* Thu Jun 28 2018 Jitka Plesnikova <jplesnik@redhat.com> - 2.0.1-4
+- Perl 5.28 rebuild
+
 * Fri Feb 09 2018 Iryna Shcherbina <ishcherb@redhat.com> - 2.0.1-3
 - Update Python 2 dependency declarations to new packaging standards
   (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
