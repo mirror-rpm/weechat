@@ -23,6 +23,7 @@ Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
 # can not be used when making a shared object; recompile with -fPIC
 Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
+BuildRequires:  gcc
 BuildRequires: asciidoctor >= 1.5.4
 BuildRequires: ca-certificates
 BuildRequires: cmake
