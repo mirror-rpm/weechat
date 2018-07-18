@@ -8,22 +8,24 @@
 %global _pkgdocdir %{_docdir}/%{_doc}
 %endif
 
+%global realver 2.2
+
 Name:      weechat
-Version:   2.0.1
-Release:   5%{?dist}
+Version:   2.2.0
+Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
 
-Source:    http://weechat.org/files/src/%{name}-%{version}.tar.bz2
+Source:    http://weechat.org/files/src/%{name}-%{realver}.tar.xz
 # /usr/bin/ld: CMakeFiles/charset.dir/charset.o:
 # relocation R_X86_64_PC32 against symbol `weechat_charset_plugin'
 # can not be used when making a shared object; recompile with -fPIC
 Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
-BuildRequires:  gcc
+BuildRequires: gcc
 BuildRequires: asciidoctor >= 1.5.4
 BuildRequires: ca-certificates
 BuildRequires: cmake
@@ -53,6 +55,8 @@ BuildRequires: v8-devel
 %endif
 BuildRequires: zlib-devel
 
+Requires:       hicolor-icon-theme
+
 %description
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
 extensible IRC client. Everything can be done with a keyboard.
@@ -73,8 +77,7 @@ This package contains include files and pc file for weechat.
 
 
 %prep
-%setup -q -n %{name}-%{version}
-%patch0 -p1
+%autosetup -p1 -n %{name}-%{realver}
 find doc/ -type f -name 'CMakeLists.txt' \
     -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
@@ -93,14 +96,14 @@ pushd build
 %endif
   -DCA_FILE=/etc/pki/tls/certs/ca-bundle.crt \
   ..
-make VERBOSE=1 %{?_smp_mflags}
+%make_build VERBOSE=1
 popd
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 pushd build
-make install DESTDIR="$RPM_BUILD_ROOT"
+%make_install
 popd
 
 %find_lang %name
@@ -108,12 +111,12 @@ popd
 
 %files -f %{name}.lang
 %doc AUTHORS.adoc ChangeLog.adoc Contributing.adoc
-%doc COPYING README.adoc ReleaseNotes.adoc
+%doc README.adoc ReleaseNotes.adoc
+%license COPYING
 %{_bindir}/%{name}-curses
 %{_bindir}/%{name}
-%dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/plugins
-%{_libdir}/%{name}/plugins/*
+%{_bindir}/%{name}-headless
+%{_libdir}/%{name}
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 %{_pkgdocdir}/weechat_*.html
 
@@ -125,6 +128,8 @@ popd
 %{_mandir}/ja/man1/weechat.1*
 %{_mandir}/pl/man1/weechat.1*
 %{_mandir}/ru/man1/weechat.1*
+%{_mandir}/man1/%{name}-headless.1*
+%{_mandir}/*/man1/%{name}-headless.1*
 
 %files devel
 %dir %{_includedir}/%{name}
@@ -133,6 +138,9 @@ popd
 
 
 %changelog
+* Wed Jul 18 2018 Vasiliy N. Glazov <vascom2@gmail.com> - 2.2.0-1
+- Update to 2.2.0 and clean spec
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
