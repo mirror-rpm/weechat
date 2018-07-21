@@ -8,10 +8,8 @@
 %global _pkgdocdir %{_docdir}/%{_doc}
 %endif
 
-%global realver 2.2
-
 Name:      weechat
-Version:   2.2.0
+Version:   2.2
 Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
@@ -19,7 +17,7 @@ URL:       http://weechat.org
 Group:     Applications/Communications
 License:   GPLv3
 
-Source:    http://weechat.org/files/src/%{name}-%{realver}.tar.xz
+Source:    http://weechat.org/files/src/%{name}-%{version}.tar.xz
 # /usr/bin/ld: CMakeFiles/charset.dir/charset.o:
 # relocation R_X86_64_PC32 against symbol `weechat_charset_plugin'
 # can not be used when making a shared object; recompile with -fPIC
@@ -77,7 +75,7 @@ This package contains include files and pc file for weechat.
 
 
 %prep
-%autosetup -p1 -n %{name}-%{realver}
+%autosetup -p1 -n %{name}-%{version}
 find doc/ -type f -name 'CMakeLists.txt' \
     -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
@@ -138,8 +136,8 @@ popd
 
 
 %changelog
-* Wed Jul 18 2018 Vasiliy N. Glazov <vascom2@gmail.com> - 2.2.0-1
-- Update to 2.2.0 and clean spec
+* Wed Jul 18 2018 Vasiliy N. Glazov <vascom2@gmail.com> - 2.2-1
+- Update to 2.2 and clean spec
 
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
