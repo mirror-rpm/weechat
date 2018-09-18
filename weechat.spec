@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   2.2
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -39,7 +39,7 @@ BuildRequires: ncurses-devel
 BuildRequires: perl-ExtUtils-Embed
 BuildRequires: perl-devel
 BuildRequires: pkgconfig
-BuildRequires: python2-devel
+BuildRequires: python3-devel
 BuildRequires: ruby
 BuildRequires: ruby-devel
 BuildRequires: source-highlight
@@ -136,6 +136,9 @@ popd
 
 
 %changelog
+* Tue Sep 18 2018 Vasiliy N. Glazov <vascom2@gmail.com> - 2.2-2
+- Switch to use python3
+
 * Wed Jul 18 2018 Vasiliy N. Glazov <vascom2@gmail.com> - 2.2-1
 - Update to 2.2 and clean spec
 
