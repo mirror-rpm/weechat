@@ -14,7 +14,7 @@
 
 Name:      weechat
 Version:   2.3
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -43,7 +43,9 @@ BuildRequires: ncurses-devel
 BuildRequires: perl-ExtUtils-Embed
 BuildRequires: perl-devel
 BuildRequires: pkgconfig
+%if 0%{?fedora} > 26
 BuildRequires: python3-devel
+%endif
 BuildRequires: ruby
 BuildRequires: ruby-devel
 BuildRequires: source-highlight
@@ -91,7 +93,9 @@ pushd build
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
   -DENABLE_ENCHANT=ON \
+%if 0%{?fedora} > 26
   -DENABLE_PYTHON3=ON \
+%endif
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
 %if 0%{?fedora} >= 25
@@ -141,6 +145,9 @@ popd
 
 
 %changelog
+* Thu Nov 29 2018 Paul Komkoff <i@stingr.net> - 2.3-2
+- Fix rhel build (no python3, hah).
+
 * Wed Nov 28 2018 Paul Komkoff <i@stingr.net> - 2.3-1
 - Update to 2.3
 - Enable python plugin.
