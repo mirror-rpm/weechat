@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   2.3
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -137,6 +137,9 @@ popd
 
 
 %changelog
+* Mon Jan 21 2019 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.3-2
+- F-30: rebuild against ruby26
+
 * Wed Nov 28 2018 Paul Komkoff <i@stingr.net> - 2.3-1
 - Update to 2.3
 - Enable python plugin.
