@@ -14,7 +14,6 @@ Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
-Group:     Applications/Communications
 License:   GPLv3
 
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.xz
@@ -62,7 +61,6 @@ It is customizable and extensible with scripts.
 
 %package devel
 Summary: Development files for weechat
-Group: Development/Libraries
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: pkgconfig
 
