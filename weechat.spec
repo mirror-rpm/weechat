@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   2.3
-Release:   2%{?dist}
+Release:   3%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -135,6 +135,9 @@ popd
 
 
 %changelog
+* Sun Feb 03 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Mon Jan 21 2019 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.3-2
 - F-30: rebuild against ruby26
 
