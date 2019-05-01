@@ -77,7 +77,7 @@ This package contains include files and pc file for weechat.
 find doc/ -type f -name 'CMakeLists.txt' \
     -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
-sed -i 's/NAMES python3.7/NAMES python3.7m python3.7/' cmake/FindPython.cmake
+sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_version}/' cmake/FindPython.cmake
 
 
 %build
