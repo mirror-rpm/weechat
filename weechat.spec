@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   2.4
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -137,6 +137,9 @@ popd
 
 
 %changelog
+* Thu May 30 2019 Jitka Plesnikova <jplesnik@redhat.com> - 2.4-2
+- Perl 5.30 rebuild
+
 * Sun Apr 14 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 2.4-1
 - Update to 2.4
 - Tweak FindPython to work with Fedora python3
