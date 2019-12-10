@@ -9,8 +9,8 @@
 %endif
 
 Name:      weechat
-Version:   2.4
-Release:   4%{?dist}
+Version:   2.7
+Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -88,6 +88,7 @@ pushd build
   -DLIBDIR=%{_libdir} \
   -DENABLE_ENCHANT=ON \
   -DENABLE_PYTHON3=ON \
+  -DENABLE_PHP=OFF \
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
 %if 0%{?fedora} >= 25
@@ -117,6 +118,12 @@ popd
 %{_bindir}/%{name}-headless
 %{_libdir}/%{name}
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
++%{_datadir}/applications/%{name}.desktop
++%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
++%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
++%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
++%{_datadir}/icons/hicolor/512x512/apps/%{name}.png
++%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 %{_pkgdocdir}/weechat_*.html
 
 %{_mandir}/man1/weechat.1*
@@ -137,6 +144,9 @@ popd
 
 
 %changelog
+* Mon Dec 09 2019 Nathan Morell <fedoraproject.org@fap.me> - 2.7-1
+- Update to 2.7
+
 * Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 2.4-4
 - Rebuilt for Python 3.8
 
