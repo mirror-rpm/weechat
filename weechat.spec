@@ -10,7 +10,7 @@
 
 Name:      weechat
 Version:   2.7
-Release:   1%{?dist}
+Release:   2%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -144,6 +144,9 @@ popd
 
 
 %changelog
+* Fri Jan 31 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.7-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Mon Dec 09 2019 Nathan Morell <fedoraproject.org@fap.me> - 2.7-1
 - Update to 2.7
 
