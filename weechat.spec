@@ -118,12 +118,12 @@ popd
 %{_bindir}/%{name}-headless
 %{_libdir}/%{name}
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-+%{_datadir}/applications/%{name}.desktop
-+%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
-+%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
-+%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
-+%{_datadir}/icons/hicolor/512x512/apps/%{name}.png
-+%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
+%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
+%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
+%{_datadir}/icons/hicolor/512x512/apps/%{name}.png
+%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 %{_pkgdocdir}/weechat_*.html
 
 %{_mandir}/man1/weechat.1*
