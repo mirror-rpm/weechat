@@ -9,8 +9,8 @@
 %endif
 
 Name:      weechat
-Version:   2.7
-Release:   2%{?dist}
+Version:   2.7.1
+Release:   1%{?dist}
 
 Summary:   Portable, fast, light and extensible IRC client
 URL:       http://weechat.org
@@ -144,6 +144,11 @@ popd
 
 
 %changelog
+* Thu Feb 20 2020 Joe Walker <grumpey0@gmail.com> - 2.7.1-1
+- Update to Version 2.7.1
+  (https://weechat.org/files/releasenotes/ReleaseNotes-2.7.1.html)
+  (https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8955)
+
 * Fri Jan 31 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
