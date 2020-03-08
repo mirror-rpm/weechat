@@ -13,12 +13,11 @@
 %endif
 
 Name:      weechat
-Version:   2.3
-Release:   2%{?dist}
-
+Version:   2.7.1
+Release:   1%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
-URL:       http://weechat.org
 Group:     Applications/Communications
+URL:       http://weechat.org
 License:   GPLv3
 
 Source:    http://weechat.org/files/src/%{name}-%{version}.tar.xz
@@ -43,9 +42,7 @@ BuildRequires: ncurses-devel
 BuildRequires: perl-ExtUtils-Embed
 BuildRequires: perl-devel
 BuildRequires: pkgconfig
-%if 0%{?fedora} > 26
 BuildRequires: python3-devel
-%endif
 BuildRequires: ruby
 BuildRequires: ruby-devel
 BuildRequires: source-highlight
@@ -53,11 +50,14 @@ BuildRequires: tcl-devel
 %ifarch %{ix86} x86_64 %{arm}
 # https://bugzilla.redhat.com/show_bug.cgi?id=1338728
 # https://github.com/weechat/weechat/issues/360
-%if 0%{?rhel} || 0%{?fedora} < 25
+%if 0%{?rhel}
 BuildRequires: v8-devel
 %endif
 %endif
 BuildRequires: zlib-devel
+%if 0%{?rhel}
+BuildRequires: cmake3
+%endif
 
 Requires:       hicolor-icon-theme
 
@@ -68,7 +68,6 @@ It is customizable and extensible with scripts.
 
 %package devel
 Summary: Development files for weechat
-Group: Development/Libraries
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: pkgconfig
 
@@ -85,22 +84,21 @@ This package contains include files and pc file for weechat.
 find doc/ -type f -name 'CMakeLists.txt' \
     -exec sed -i -e 's#${PROJECT_NAME}#%{_doc}#g' '{}' \;
 
+sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_version}/' cmake/FindPython.cmake
+
 
 %build
 mkdir build
 pushd build
-%cmake \
+%cmake3 \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
   -DENABLE_ENCHANT=ON \
-%if 0%{?fedora} > 26
   -DENABLE_PYTHON3=ON \
-%endif
+  -DENABLE_PHP=OFF \
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
-%if 0%{?fedora} >= 25
   -DENABLE_JAVASCRIPT=OFF \
-%endif
   -DCA_FILE=/etc/pki/tls/certs/ca-bundle.crt \
   ..
 %make_build VERBOSE=1
@@ -125,6 +123,12 @@ popd
 %{_bindir}/%{name}-headless
 %{_libdir}/%{name}
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
+%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
+%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
+%{_datadir}/icons/hicolor/512x512/apps/%{name}.png
+%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 %{_pkgdocdir}/weechat_*.html
 
 %{_mandir}/man1/weechat.1*
@@ -145,8 +149,35 @@ popd
 
 
 %changelog
-* Thu Nov 29 2018 Paul Komkoff <i@stingr.net> - 2.3-2
-- Fix rhel build (no python3, hah).
+* Thu Feb 20 2020 Joe Walker <grumpey0@gmail.com> - 2.7.1-1
+- Update to Version 2.7.1
+  (https://weechat.org/files/releasenotes/ReleaseNotes-2.7.1.html)
+  (https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8955)
+
+* Fri Jan 31 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.7-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Mon Dec 09 2019 Nathan Morell <fedoraproject.org@fap.me> - 2.7-1
+- Update to 2.7
+
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 2.4-4
+- Rebuilt for Python 3.8
+
+* Sat Jul 27 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.4-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Thu May 30 2019 Jitka Plesnikova <jplesnik@redhat.com> - 2.4-2
+- Perl 5.30 rebuild
+
+* Sun Apr 14 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 2.4-1
+- Update to 2.4
+- Tweak FindPython to work with Fedora python3
+
+* Sun Feb 03 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Mon Jan 21 2019 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.3-2
+- F-30: rebuild against ruby26
 
 * Wed Nov 28 2018 Paul Komkoff <i@stingr.net> - 2.3-1
 - Update to 2.3
