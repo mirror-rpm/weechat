@@ -27,7 +27,9 @@ Source:    http://weechat.org/files/src/%{name}-%{version}.tar.xz
 Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
 BuildRequires: gcc
-BuildRequires: asciidoctor >= 1.5.4
+%if 0%{?fedora} || 0%{?rhel} < 8
+BuildRequires: asciidoctor
+%endif
 BuildRequires: ca-certificates
 BuildRequires: cmake
 BuildRequires: docbook-style-xsl
@@ -50,7 +52,7 @@ BuildRequires: tcl-devel
 %ifarch %{ix86} x86_64 %{arm}
 # https://bugzilla.redhat.com/show_bug.cgi?id=1338728
 # https://github.com/weechat/weechat/issues/360
-%if 0%{?rhel}
+%if 0%{?rhel} && 0%{?rhel} < 8
 BuildRequires: v8-devel
 %endif
 %endif
@@ -96,8 +98,13 @@ pushd build
   -DENABLE_ENCHANT=ON \
   -DENABLE_PYTHON3=ON \
   -DENABLE_PHP=OFF \
+%if 0%{?fedora} || 0%{?rhel} < 8
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
+%else
+  -DENABLE_DOC=OFF \
+  -DENABLE_MAN=OFF \
+%endif
   -DENABLE_JAVASCRIPT=OFF \
   -DCA_FILE=/etc/pki/tls/certs/ca-bundle.crt \
   ..
@@ -129,8 +136,8 @@ popd
 %{_datadir}/icons/hicolor/256x256/apps/%{name}.png
 %{_datadir}/icons/hicolor/512x512/apps/%{name}.png
 %{_datadir}/icons/hicolor/64x64/apps/%{name}.png
+%if 0%{?fedora} || 0%{?rhel} < 8
 %{_pkgdocdir}/weechat_*.html
-
 %{_mandir}/man1/weechat.1*
 %{_mandir}/cs/man1/weechat.1*
 %{_mandir}/de/man1/weechat.1*
@@ -141,6 +148,7 @@ popd
 %{_mandir}/ru/man1/weechat.1*
 %{_mandir}/man1/%{name}-headless.1*
 %{_mandir}/*/man1/%{name}-headless.1*
+%endif
 
 %files devel
 %dir %{_includedir}/%{name}
