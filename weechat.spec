@@ -13,7 +13,7 @@
 %endif
 
 Name:      weechat
-Version:   2.7.1
+Version:   2.8
 Release:   1%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
@@ -157,6 +157,9 @@ popd
 
 
 %changelog
+* Wed Apr 1 2020 Paul Komkoff <i@stingr.net> - 2.8-1
+- Update to 2.8
+
 * Thu Feb 20 2020 Joe Walker <grumpey0@gmail.com> - 2.7.1-1
 - Update to Version 2.7.1
   (https://weechat.org/files/releasenotes/ReleaseNotes-2.7.1.html)
