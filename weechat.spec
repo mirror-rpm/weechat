@@ -14,7 +14,7 @@
 
 Name:      weechat
 Version:   2.8
-Release:   2%{?dist}
+Release:   3%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
 URL:       http://weechat.org
@@ -157,6 +157,9 @@ popd
 
 
 %changelog
+* Mon Jun 22 2020 Jitka Plesnikova <jplesnik@redhat.com> - 2.8-3
+- Perl 5.32 rebuild
+
 * Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 2.8-2
 - Rebuilt for Python 3.9
 
