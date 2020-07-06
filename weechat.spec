@@ -1,4 +1,4 @@
-%global _hardened_build 1
+%undefine __cmake_in_source_build
 %global __provides_exclude_from ^%{_libdir}/weechat/plugins/.*$
 
 %if %{?_pkgdocdir:1}0
@@ -90,8 +90,6 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 
 
 %build
-mkdir build
-pushd build
 %cmake3 \
   -DPREFIX=%{_prefix} \
   -DLIBDIR=%{_libdir} \
@@ -107,16 +105,12 @@ pushd build
 %endif
   -DENABLE_JAVASCRIPT=OFF \
   -DCA_FILE=/etc/pki/tls/certs/ca-bundle.crt \
-  ..
-%make_build VERBOSE=1
-popd
+  %{nil}
+%cmake_build
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-pushd build
-%make_install
-popd
+%cmake_install
 
 %find_lang %name
 
