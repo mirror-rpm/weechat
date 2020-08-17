@@ -61,7 +61,13 @@ BuildRequires: zlib-devel
 BuildRequires: cmake3
 %endif
 
-Requires:       hicolor-icon-theme
+Requires:      hicolor-icon-theme
+
+%if 0%{?el8}
+# enchant-devel from AppStream is not available on s390x
+# bz# 1869383
+ExcludeArch:   s390x
+%endif
 
 %description
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
