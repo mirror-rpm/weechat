@@ -14,7 +14,7 @@
 
 Name:      weechat
 Version:   2.9
-Release:   1%{?dist}
+Release:   2%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
 URL:       http://weechat.org
@@ -36,7 +36,11 @@ BuildRequires: docbook-style-xsl
 BuildRequires: enchant-devel
 BuildRequires: gettext
 BuildRequires: gnutls-devel
+%if 0%{?fedora} >= 30 || 0%{?rhel} > 8
+BuildRequires: guile22-devel
+%else
 BuildRequires: guile-devel
+%endif
 BuildRequires: libcurl-devel
 BuildRequires: libgcrypt-devel
 BuildRequires: lua-devel
@@ -157,6 +161,9 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 
 
 %changelog
+* Mon Sep 14 2020 Peter Robinson <pbrobinson@fedoraproject.org> - 2.9-2
+- Use guile 2.2 where possible
+
 * Mon Aug 17 2020 Michel Alexandre Salim <salimma@fedoraproject.org> - 2.9-1
 - Update to 2.9
 
