@@ -13,8 +13,8 @@
 %endif
 
 Name:      weechat
-Version:   3.0
-Release:   2%{?dist}
+Version:   3.0.1
+Release:   1%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
 URL:       http://weechat.org
@@ -161,6 +161,9 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 
 
 %changelog
+* Fri Feb 12 2021 Łukasz Patron <priv.luk@gmail.com> - 3.0.1-1
+- Update to 3.0.1
+
 * Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 3.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
