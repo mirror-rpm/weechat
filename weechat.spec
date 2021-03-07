@@ -13,7 +13,7 @@
 %endif
 
 Name:      weechat
-Version:   3.0.1
+Version:   3.1
 Release:   1%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
@@ -161,6 +161,9 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 
 
 %changelog
+* Sun Mar 07 2021 Łukasz Patron <priv.luk@gmail.com> - 3.1-1
+- Update to 3.1
+
 * Fri Feb 12 2021 Łukasz Patron <priv.luk@gmail.com> - 3.0.1-1
 - Update to 3.0.1
 
