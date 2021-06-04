@@ -14,7 +14,7 @@
 
 Name:      weechat
 Version:   3.1
-Release:   2%{?dist}
+Release:   3%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
 URL:       http://weechat.org
@@ -161,6 +161,9 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 
 
 %changelog
+* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 3.1-3
+- Rebuilt for Python 3.10
+
 * Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 3.1-2
 - Perl 5.34 rebuild
 
