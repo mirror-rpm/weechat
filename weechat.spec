@@ -13,8 +13,8 @@
 %endif
 
 Name:      weechat
-Version:   3.1
-Release:   3%{?dist}
+Version:   3.2
+Release:   1%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
 URL:       http://weechat.org
@@ -66,12 +66,6 @@ BuildRequires: cmake3
 %endif
 
 Requires:      hicolor-icon-theme
-
-%if 0%{?el8}
-# enchant-devel from AppStream is not available on s390x
-# bz# 1869383
-ExcludeArch:   s390x
-%endif
 
 %description
 WeeChat (Wee Enhanced Environment for Chat) is a portable, fast, light and
@@ -161,6 +155,10 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 
 
 %changelog
+* Sun Jul 11 2021 Michel Alexandre Salim <salimma@fedoraproject.org> - 3.2-1
+- Update to 3.2
+- Reenable s390x build for EPEL8 (#1869383)
+
 * Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 3.1-3
 - Rebuilt for Python 3.10
 
