@@ -14,7 +14,7 @@
 
 Name:      weechat
 Version:   3.2
-Release:   1%{?dist}
+Release:   2%{?dist}
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
 URL:       http://weechat.org
@@ -155,6 +155,9 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 
 
 %changelog
+* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 3.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Sun Jul 11 2021 Michel Alexandre Salim <salimma@fedoraproject.org> - 3.2-1
 - Update to 3.2
 - Reenable s390x build for EPEL8 (#1869383)
