@@ -137,13 +137,7 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 %if 0%{?fedora} || 0%{?rhel} < 8
 %{_pkgdocdir}/weechat_*.html
 %{_mandir}/man1/weechat.1*
-%{_mandir}/cs/man1/weechat.1*
-%{_mandir}/de/man1/weechat.1*
-%{_mandir}/fr/man1/weechat.1*
-%{_mandir}/it/man1/weechat.1*
-%{_mandir}/ja/man1/weechat.1*
-%{_mandir}/pl/man1/weechat.1*
-%{_mandir}/ru/man1/weechat.1*
+%{_mandir}/*/man1/weechat.1*
 %{_mandir}/man1/%{name}-headless.1*
 %{_mandir}/*/man1/%{name}-headless.1*
 %endif
