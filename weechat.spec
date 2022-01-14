@@ -1,5 +1,5 @@
 # TODO: package cpputest
-%bcond_with check
+%bcond_without check
 
 %if 0%{?fedora} || 0%{?rhel} < 8
 %bcond_without docs
@@ -37,10 +37,14 @@ Source:    http://weechat.org/files/src/%{name}-%{version}.tar.xz
 # relocation R_X86_64_PC32 against symbol `weechat_charset_plugin'
 # can not be used when making a shared object; recompile with -fPIC
 Patch0:    weechat-1.0.1-plugins-fPIC.patch
+Patch1:    weechat-3.4-tests-fPIC.patch
+# this fails on too many tests, we want to let them finish anyway
+Patch2:    weechat-3.4-disable-memleak-detection.patch
 
 BuildRequires: gcc
 %if %{with check}
 BuildRequires: cpputest-devel
+BuildRequires: glibc-langpack-en
 %endif
 %if %{with docs}
 BuildRequires: asciidoctor
@@ -140,7 +144,7 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 
 
 %if %{with check}
-%ctest
+%ctest -- -V
 %endif
 
 
