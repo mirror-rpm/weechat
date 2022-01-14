@@ -40,7 +40,8 @@ Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
 BuildRequires: gcc
 %if %{with check}
-BuildRequires: cpputest
+BuildRequires: cpputest-devel
+%endif
 %if %{with docs}
 BuildRequires: asciidoctor
 %endif
