@@ -1,4 +1,16 @@
+# TODO: package cpputest
+%bcond_with check
+
+%if 0%{?fedora} || 0%{?rhel} < 8
+%bcond_without docs
+%else
+# TODO: package rubygem-asciidoctor
+%bcond_with docs
+%endif
+
+%if 0%{?rhel} && 0%{?rhel} < 9
 %undefine __cmake_in_source_build
+%endif
 %global __provides_exclude_from ^%{_libdir}/weechat/plugins/.*$
 
 %if %{?_pkgdocdir:1}0
@@ -13,7 +25,7 @@
 %endif
 
 Name:      weechat
-Version:   3.3
+Version:   3.4
 Release:   %autorelease
 Summary:   Portable, fast, light and extensible IRC client
 Group:     Applications/Communications
@@ -27,7 +39,9 @@ Source:    http://weechat.org/files/src/%{name}-%{version}.tar.xz
 Patch0:    weechat-1.0.1-plugins-fPIC.patch
 
 BuildRequires: gcc
-%if 0%{?fedora} || 0%{?rhel} < 8
+%if %{with check}
+BuildRequires: cpputest
+%if %{with docs}
 BuildRequires: asciidoctor
 %endif
 BuildRequires: ca-certificates
@@ -100,7 +114,12 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
   -DENABLE_ENCHANT=ON \
   -DENABLE_PYTHON3=ON \
   -DENABLE_PHP=OFF \
-%if 0%{?fedora} || 0%{?rhel} < 8
+%if %{with check}
+  -DENABLE_TESTS=ON \
+%else
+  -DENABLE_TESTS=OFF \
+%endif
+%if %{with docs}
   -DENABLE_DOC=ON \
   -DENABLE_MAN=ON \
 %else
@@ -117,6 +136,11 @@ sed -i 's/NAMES python3.7/NAMES python%{python3_version}m python%{python3_versio
 %cmake_install
 
 %find_lang %name
+
+
+%if %{with check}
+%ctest
+%endif
 
 
 %files -f %{name}.lang
