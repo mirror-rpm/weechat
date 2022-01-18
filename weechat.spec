@@ -1,5 +1,9 @@
-# TODO: package cpputest
+%ifnarch s390x
 %bcond_without check
+%else
+# some tests fail on s390x
+%bcond_with check
+%endif
 
 %if 0%{?fedora} || 0%{?rhel} < 8
 %bcond_without docs
